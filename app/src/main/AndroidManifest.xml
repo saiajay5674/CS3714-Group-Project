@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.group_project">
 
+
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -19,8 +21,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB1YFFVkaTAbU8K1Q9DSqKPcco6L_w"/>
-
+            android:value="AIzaSyB1YFFVkaTAbU8K1Q9DSqKPcco6L_w-gAw"/>
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
     </application>
 
 
