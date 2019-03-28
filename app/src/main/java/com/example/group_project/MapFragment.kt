@@ -2,8 +2,10 @@ package com.example.group_project
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -57,27 +59,46 @@ class MapFragment : Fragment(), OnMapReadyCallback{
 
 
     (view.findViewById(R.id.popBtn) as Button).setOnClickListener{
-        val window = PopupWindow(context)
-        val view = layoutInflater.inflate(R.layout.popup,null)
 
-        window.contentView = view
 
-        window.animationStyle
-        window.showAsDropDown(view)
+
+        val dialog = Dialog()
+
+        //dialog.setTargetFragment(this,1)
+        dialog.show(childFragmentManager, "dialog")
+
+        //val builder = AlertDialog.Builder(context)
+//        // Get the layout inflater
+//        val inflater = requireActivity().layoutInflater;
+//
+//        // Inflate and set the layout for the dialog
+//        // Pass null as the parent view because its going in the dialog layout
+//        builder.setView(inflater.inflate(R.layout.popup, null))
+//            // Add action buttons
+//            .setPositiveButton("dd",
+//                DialogInterface.OnClickListener { dialog, id ->
+//                    // sign in the user ...
+//                })
+//            .setNegativeButton("cancel",
+//                DialogInterface.OnClickListener { dialog, id ->
+//                    dialog.cancel()
+//                })
+//        builder.create()
+//     ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    (view.findViewById(R.id.timePick) as? Button)?.setOnClickListener{
-        val calander = Calendar.getInstance()
-
-        val selectedTimeListner = TimePickerDialog.OnTimeSetListener{timePicker, hour, minute ->
-            calander.set(Calendar.HOUR_OF_DAY, hour)
-            calander.set(Calendar.MINUTE, minute)
-
-           timeWindow.text = SimpleDateFormat("HH:mm").format(calander.time)
-        }
-        TimePickerDialog(context,selectedTimeListner,calander.get(Calendar.HOUR_OF_DAY), calander.get(Calendar.MINUTE),true).show()
-
-    }
+//    (view.findViewById(R.id.timePick) as? Button).setOnClickListener{
+//        val calander = Calendar.getInstance()
+//
+//        val selectedTimeListner = TimePickerDialog.OnTimeSetListener{timePicker, hour, minute ->
+//            calander.set(Calendar.HOUR_OF_DAY, hour)
+//            calander.set(Calendar.MINUTE, minute)
+//
+//           timeWindow.text = SimpleDateFormat("HH:mm").format(calander.time)
+//        }
+//        TimePickerDialog(context,selectedTimeListner,calander.get(Calendar.HOUR_OF_DAY), calander.get(Calendar.MINUTE),true).show()
+//
+//    }
 
     val spinner: Spinner?= (getView()?.findViewById(R.id.games_spinner) as? Spinner)
 // Create an ArrayAdapter using the string array and a default spinner layout
