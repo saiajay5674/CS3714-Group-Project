@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -47,7 +49,19 @@ class MapFragment : Fragment(), OnMapReadyCallback{
 
         mapFragment.getMapAsync(this)
         // Inflate the layout for this fragment
-        return view
+
+
+    (view.findViewById(R.id.popBtn) as Button).setOnClickListener{
+        val window = PopupWindow(context)
+        val view = layoutInflater.inflate(R.layout.popup,null)
+
+        window.contentView = view
+
+        window.animationStyle
+        window.showAsDropDown(view)
+    }
+
+    return view
     }
 
     /**
