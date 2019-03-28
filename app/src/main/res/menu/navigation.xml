@@ -3,35 +3,29 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/activeGame"
+            android:id="@+id/menu_events"
             android:enabled="true"
-            android:title="Games"
+            android:title="Events"
             android:icon="@drawable/ic_games_black_24dp"
             app:showAsAction="ifRoom"/>
 
     <item
-            android:id="@+id/newGame"
+            android:id="@+id/menu_new_event"
             android:enabled="true"
-            android:title="New Game"
+            android:title="New Event"
             android:icon="@drawable/ic_add_black_24dp"
             app:showAsAction="ifRoom"/>
 
     <item
-            android:id="@+id/Friends"
+            android:id="@+id/menu_friends"
             android:enabled="true"
             android:title="Friends"
             android:icon="@drawable/ic_people_outline_black_24dp"
             app:showAsAction="ifRoom"/>
 
-    <item
-            android:id="@+id/rating"
-            android:enabled="true"
-            android:title="rating"
-            android:icon="@drawable/ic_star_black_24dp"
-            app:showAsAction="ifRoom"/>
 
     <item
-            android:id="@+id/profile"
+            android:id="@+id/menu_profile"
             android:enabled="true"
             android:title="Profile"
             android:icon="@drawable/ic_account_circle_black_24dp"
