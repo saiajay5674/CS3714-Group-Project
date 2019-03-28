@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "397565777826",
-    "firebase_url": "https://playm8-d8a14.firebaseio.com",
-    "project_id": "playm8-d8a14",
-    "storage_bucket": "playm8-d8a14.appspot.com"
+    "project_number": "145834932042",
+    "firebase_url": "https://playm8-e30cd.firebaseio.com",
+    "project_id": "playm8-e30cd",
+    "storage_bucket": "playm8-e30cd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:397565777826:android:657a9b9f92d85ce0",
+        "mobilesdk_app_id": "1:145834932042:android:657a9b9f92d85ce0",
         "android_client_info": {
           "package_name": "com.example.group_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "397565777826-sqot4r55nanaa51e4fej1an7pak2aff0.apps.googleusercontent.com",
+          "client_id": "145834932042-94serc2b7dh6gp5fs15k03e25udbbl45.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.group_project",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "397565777826-hq242847k99i2f7gipceokc9a8ncpa6u.apps.googleusercontent.com",
+          "client_id": "145834932042-h5areb5g6br28brvf1llpsopgg4t8hor.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBR_QAcD-zzGGuwZFw3xRn0uiZMKRsJQN8"
+          "current_key": "AIzaSyDXfBjEJNKUvdvW_qHA8t7XWhxIw1lmhnk"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "397565777826-hq242847k99i2f7gipceokc9a8ncpa6u.apps.googleusercontent.com",
+              "client_id": "145834932042-h5areb5g6br28brvf1llpsopgg4t8hor.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

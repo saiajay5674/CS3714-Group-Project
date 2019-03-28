@@ -5,4 +5,5 @@ import androidx.lifecycle.AndroidViewModel
 
 class EventViewModel(application: Application): AndroidViewModel(application) {
 
+
 }

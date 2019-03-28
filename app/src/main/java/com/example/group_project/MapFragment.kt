@@ -1,11 +1,6 @@
 package com.example.group_project
 
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.app.TimePickerDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,19 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.PopupWindow
 import android.widget.Spinner
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.popup.*
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.firebase.FirebaseApp
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -100,7 +90,7 @@ class MapFragment : Fragment(), OnMapReadyCallback{
 //
 //    }
 
-    val spinner: Spinner?= (getView()?.findViewById(R.id.games_spinner) as? Spinner)
+    val spinner: Spinner?= (getView()?.findViewById(R.id.add_event_sport) as? Spinner)
 // Create an ArrayAdapter using the string array and a default spinner layout
     ArrayAdapter.createFromResource(context, R.array.games, android.R.layout.simple_spinner_item).also { adapter ->
         // Specify the layout to use when the list of choices appears
