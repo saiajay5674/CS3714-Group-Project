@@ -4,9 +4,20 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
 
 class Dialog:DialogFragment() {
+
+    private val addEvent = DialogInterface.OnClickListener { dialog, id ->
+
+        val sport = view?.findViewById<Spinner>(R.id.games_spinner)?.selectedItem.toString()
+        val time = view?.findViewById<EditText>(R.id.chooseTime)?.text.toString()
+        val location = view?.findViewById<EditText>(R.id.chooseTime)?.text.toString()
+
+
+    }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -17,11 +28,10 @@ class Dialog:DialogFragment() {
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(inflater.inflate(R.layout.popup, null))
                 // Add action buttons
-
-
-                .setPositiveButton("add game",
+                .setMessage("Create a new Event")
+                .setPositiveButton("Add Event",
                     DialogInterface.OnClickListener { dialog, id ->
-                        // sign in the user ...
+
                     })
                 .setNegativeButton("cancel",
                     DialogInterface.OnClickListener { dialog, id ->
