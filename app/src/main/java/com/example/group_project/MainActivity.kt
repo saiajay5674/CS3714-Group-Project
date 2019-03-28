@@ -13,14 +13,14 @@ class MainActivity : AppCompatActivity(){
     //private lateinit var fragment: Fragment
     //private lateinit var mMap: GoogleMap
     private var mBottomNav: BottomNavigationView? = null
-    lateinit var database: FirebaseDatabase
+
 
     private val listener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when(item.itemId) {
 
             R.id.menu_new_event -> {
-                val mapFragment = MapFragment.newInstance()
+                val mapFragment = MapFragment()
                 openFragment(mapFragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(){
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        database = FirebaseDatabase.getInstance()
         mBottomNav = findViewById(R.id.bottom_navigation)
         mBottomNav?.setOnNavigationItemSelectedListener(listener)
     }

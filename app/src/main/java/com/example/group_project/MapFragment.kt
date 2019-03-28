@@ -15,7 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.FirebaseApp
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -121,11 +121,5 @@ class MapFragment : Fragment(), OnMapReadyCallback{
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
     }
-
-
-    companion object {
-        fun newInstance(): MapFragment = MapFragment()
-    }
-
 
 }
