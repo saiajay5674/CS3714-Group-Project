@@ -2,14 +2,17 @@ package com.example.group_project
 
 
 import android.app.Activity
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,7 +21,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-
+import kotlinx.android.synthetic.main.popup.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -60,6 +65,29 @@ class MapFragment : Fragment(), OnMapReadyCallback{
         window.animationStyle
         window.showAsDropDown(view)
     }
+
+    (view.findViewById(R.id.timePick) as? Button)?.setOnClickListener{
+        val calander = Calendar.getInstance()
+
+        val selectedTimeListner = TimePickerDialog.OnTimeSetListener{timePicker, hour, minute ->
+            calander.set(Calendar.HOUR_OF_DAY, hour)
+            calander.set(Calendar.MINUTE, minute)
+
+           timeWindow.text = SimpleDateFormat("HH:mm").format(calander.time)
+        }
+        TimePickerDialog(context,selectedTimeListner,calander.get(Calendar.HOUR_OF_DAY), calander.get(Calendar.MINUTE),true).show()
+
+    }
+
+    val spinner: Spinner?= (getView()?.findViewById(R.id.games_spinner) as? Spinner)
+// Create an ArrayAdapter using the string array and a default spinner layout
+    ArrayAdapter.createFromResource(context, R.array.games, android.R.layout.simple_spinner_item).also { adapter ->
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Apply the adapter to the spinner
+        spinner?.adapter = adapter
+    }
+
 
     return view
     }

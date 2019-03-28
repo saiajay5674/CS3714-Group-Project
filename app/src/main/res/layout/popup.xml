@@ -3,15 +3,20 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
+    <Spinner
+            android:id="@+id/games_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="@drawable/cast_expanded_controller_bg_gradient_light"/>
     <Button
             android:text="add game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/game"/>
-    <EditText
+    <Button
+            android:text="Choose time"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="time"
-            android:ems="10"
-            android:id="@+id/editText"/>
+            android:layout_height="wrap_content" android:id="@+id/timePick"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/timeWindow"/>
 </LinearLayout>
