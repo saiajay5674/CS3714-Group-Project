@@ -4,6 +4,15 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <string-array name="games">
+        <item>Basketball</item>
+        <item>Soccer</item>
+        <item>Football</item>
+        <item>Volleyball</item>
+        <item>Tennis</item>
+        <item>Golf</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
