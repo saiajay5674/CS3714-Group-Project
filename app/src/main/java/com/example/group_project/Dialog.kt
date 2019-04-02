@@ -10,19 +10,32 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.google.android.gms.location.places.Place
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
+import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
 
 class Dialog: DialogFragment() {
 
+    private var placesAutocomplete : PlacesAutocompleteTextView? = null
+    var location: com.seatgeek.placesautocomplete.model.Place? = null
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
+
+
             val builder = AlertDialog.Builder(it)
             // Get the layout inflater
             val inflater = requireActivity().layoutInflater;
             val view = inflater.inflate(R.layout.popup, null)
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
+
+            placesAutocomplete = view?.findViewById(R.id.event_location)
+            placesAutocomplete?.setOnPlaceSelectedListener {
+
+                location = it
+            }
             builder.setView(view)
                 // Add action buttons
                 .setMessage("Create a new Event")
@@ -31,15 +44,16 @@ class Dialog: DialogFragment() {
 
                     val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
                     val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
-                    val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
+                    //val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
                     val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
 
+                    val placeName = location!!.toString()
                     val ref = FirebaseDatabase.getInstance().getReference("events")
 
                     val eventId = ref.push().key
 
-                    val event = Event(eventId, sport, time, location, players)
+                    val event = Event(eventId, sport, time, placeName, players)
 
                     ref.child(eventId).setValue(event).addOnCompleteListener {
 
