@@ -42,8 +42,8 @@ class EventsListFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
 
-            val v = LayoutInflater.from(parent.context)
-                .inflate(R.layout.card_view, parent, false)
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.card_view, parent, false)
+
             return EventViewHolder(v)
         }
 
