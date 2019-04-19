@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.group_project">
 
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
             android:allowBackup="true"
@@ -11,23 +12,25 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SignupActivity">
+        </activity>
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity">
+        </activity>
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB1YFFVkaTAbU8K1Q9DSqKPcco6L_w-gAw"/>
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyB1YFFVkaTAbU8K1Q9DSqKPcco6L_w-gAw"/>
+
+        <uses-library
+                android:name="org.apache.http.legacy"
+                android:required="false"/>
     </application>
-
-
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>
