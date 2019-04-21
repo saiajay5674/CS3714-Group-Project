@@ -48,35 +48,15 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun registerUser()
     {
+        if(!validateInput())
+        {
+            return
+        }
+
         val email = emailAddress.text.toString().trim()
         val pass = password.text.toString().trim()
         val username = username.text.toString().trim()
         val phone = phoneNumber.text.toString().trim()
-
-        var register = true
-        if(TextUtils.isEmpty(email))
-        {
-            emailAddress.setError("The field cannot be blank")
-            Toast.makeText(this, "Please enter email address", Toast.LENGTH_SHORT).show()
-            register = false
-        }
-        if(TextUtils.isEmpty(pass))
-        {
-            password.setError("The field cannot be blank")
-            Toast.makeText(this, "Please password", Toast.LENGTH_SHORT).show()
-            register = false
-        }
-        if(!isValidEmail(email))
-        {
-            emailAddress.setError("Please enter a valid email address")
-            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show()
-            register = false
-        }
-
-        if(!register)
-        {
-            return
-        }
 
         //Registering user
         progressDialog.setMessage("Registering User...")
@@ -87,16 +67,15 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
             progressDialog.dismiss()
 
             if (it.isSuccessful) {
-                Toast.makeText(this, "Registerd Successfully", Toast.LENGTH_SHORT).show()
 
                 val ref = FirebaseDatabase.getInstance().getReference("users")
 
-//                val uid = it.result.user.uid
-//                val user = User(uid, username, email, phone)
-//                Log.d("UID-------------->", uid.toString())
-//                ref.child(uid).setValue(user).addOnCompleteListener {
-//                    Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show()
-//                }
+                val uid = it.result.user.uid
+                val user = User(uid, username, email, phone)
+                Log.d("UID-------------->", uid.toString())
+                ref.child(uid).setValue(user).addOnCompleteListener {
+                    Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show()
+                }
 
 
                 finish()
@@ -108,6 +87,44 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+    }
+
+    private fun validateInput(): Boolean
+    {
+        val email = emailAddress.text.toString().trim()
+        val pass = password.text.toString().trim()
+        val username = username.text.toString().trim()
+        val phone = phoneNumber.text.toString().trim()
+
+        var register = true
+        if(TextUtils.isEmpty(email))
+        {
+            emailAddress.setError("The field cannot be blank")
+            register = false
+        }
+        if(TextUtils.isEmpty(pass))
+        {
+            password.setError("The field cannot be blank")
+            register = false
+        }
+        if(!isValidEmail(email))
+        {
+            emailAddress.setError("Please enter a valid email address")
+            register = false
+        }
+        if(TextUtils.isEmpty(username))
+        {
+            this.username.setError("The field cannot be blank")
+            register = false
+        }
+        if(TextUtils.isEmpty(phone))
+        {
+            phoneNumber.setError("The field cannot be blank")
+            register = false
+        }
+
+
+        return register
     }
 
     private fun isValidEmail(email: String): Boolean

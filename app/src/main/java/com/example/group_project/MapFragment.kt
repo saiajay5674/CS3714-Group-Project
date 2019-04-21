@@ -2,7 +2,6 @@ package com.example.group_project
 
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -77,7 +76,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
         (view.findViewById(R.id.popBtn) as Button).setOnClickListener {
-            val dialog = Dialog()
+            val dialog = EventDialog()
 
             //dialog.setTargetFragment(this,1)
             dialog.show(childFragmentManager, "dialog")

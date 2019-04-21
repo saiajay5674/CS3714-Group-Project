@@ -50,12 +50,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
         if(TextUtils.isEmpty(email))
         {
-            Toast.makeText(this, "Please enter email address", Toast.LENGTH_SHORT).show()
+            this.username.setError("The field cannot be empty")
             return
         }
         if(TextUtils.isEmpty(pass))
         {
-            Toast.makeText(this, "Please password", Toast.LENGTH_SHORT).show()
+            this.password.setError("The field cannot be empty")
             return
         }
 
@@ -72,8 +72,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
                 startActivity(Intent(this, MainActivity::class.java))
             }
         }
-
-
     }
 
     override fun onClick(v: View?) {

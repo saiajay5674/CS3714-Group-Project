@@ -15,7 +15,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
 
-class Dialog: DialogFragment() {
+class EventDialog: DialogFragment() {
 
     private var placesAutocomplete : PlacesAutocompleteTextView? = null
     var location: com.seatgeek.placesautocomplete.model.Place? = null
