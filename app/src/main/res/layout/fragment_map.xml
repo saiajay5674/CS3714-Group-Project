@@ -19,9 +19,41 @@
 
             android:layout_width="40dp"
             android:layout_height="40dp" android:id="@+id/popBtn"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="64dp"
             app:layout_constraintTop_toTopOf="parent" android:backgroundTint="@android:color/holo_blue_bright"/>
+    
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:elevation="10dp"
+            android:background="@drawable/white_border"
+            android:id="@+id/search_bar">
+
+            <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:id="@+id/magnify_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_magnify"
+            />
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/magnify_icon"
+                    android:layout_centerVertical="true"
+                    android:textColor="#000"
+                    android:id="@+id/input_search"
+                    android:background="@null"
+                    android:imeOptions="actionSearch"
+                    android:hint="Enter Address, City or Zipcode"
+            />
+
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

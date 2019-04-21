@@ -8,7 +8,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 
-class MainActivity : AppCompatActivity(){
+class
+MainActivity : AppCompatActivity(){
 
     //private lateinit var fragment: Fragment
     //private lateinit var mMap: GoogleMap
@@ -48,6 +49,9 @@ class MainActivity : AppCompatActivity(){
 
         mBottomNav = findViewById(R.id.bottom_navigation)
         mBottomNav?.setOnNavigationItemSelectedListener(listener)
+
+        openFragment(EventsListFragment())
+        mBottomNav?.selectedItemId = R.id.menu_events
     }
 
     private fun openFragment(fragment: Fragment) {

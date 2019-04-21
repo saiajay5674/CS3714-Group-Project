@@ -35,11 +35,11 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/add_event_players_number"/>
 
-    <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
+    <AutoCompleteTextView
             android:id="@+id/event_location"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            app:pacv_googleMapsApiKey="AIzaSyAx1d4-YkzVP3cgWls2SSGduYW0_8y4ob0"
             app:layout_constraintTop_toBottomOf="@+id/add_event_sport"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:completionHint="Location"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

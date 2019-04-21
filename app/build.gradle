@@ -46,6 +46,8 @@ allprojects {
             url 'https://oss.sonatype.org/content/repositories/snapshots'
         }
 
+        maven { url "https://jitpack.io" }
+
 
     }
 }
@@ -104,6 +106,9 @@ dependencies {
     implementation 'com.seatgeek:placesautocomplete:0.3-SNAPSHOT'
 
     implementation 'commons-validator:commons-validator:1.6'
+
+    //Auto-Complete
+    implementation 'com.github.mukeshsolanki:Google-Places-AutoComplete-EditText:0.0.6'
 }
 
 apply plugin: 'com.google.gms.google-services'

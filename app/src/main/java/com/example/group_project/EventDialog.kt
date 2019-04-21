@@ -1,24 +1,29 @@
 package com.example.group_project
 
+import `in`.madapps.placesautocomplete.PlaceAPI
+import `in`.madapps.placesautocomplete.adapter.PlacesAutoCompleteAdapter
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.google.android.gms.location.places.Place
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
 
+
 class EventDialog: DialogFragment() {
 
-    private var placesAutocomplete : PlacesAutocompleteTextView? = null
-    var location: com.seatgeek.placesautocomplete.model.Place? = null
+    private var placesAutocomplete : AutoCompleteTextView? = null
+    var location: AutoCompleteTextView? = null
+
+    //val placesApi = PlaceAPI.Builder().apiKey("AIzaSyAeMzjhWrb6ZCLmhkqzelmY6LD63e2_VPY").build()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -31,11 +36,9 @@ class EventDialog: DialogFragment() {
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
 
-            placesAutocomplete = view?.findViewById(R.id.event_location)
-            placesAutocomplete?.setOnPlaceSelectedListener {
+//            location = view?.findViewById(R.id.event_location)
+//            location?.setAdapter(PlacesAutoCompleteAdapter(activity!!.applicationContext, placesApi))
 
-                location = it
-            }
             builder.setView(view)
                 // Add action buttons
                 .setMessage("Create a new Event")
@@ -44,7 +47,7 @@ class EventDialog: DialogFragment() {
 
                     val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
                     val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
-                    //val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
+                    //val location = view?.findViewById<EditText>(R.id.event_location)?.text.toString()
                     val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
 
@@ -67,5 +70,6 @@ class EventDialog: DialogFragment() {
 
         } ?: throw IllegalStateException("Activity cannot be null")
     }
-    }
+
+}
 

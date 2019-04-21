@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
@@ -38,6 +37,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         if(firebaseAuth.currentUser != null)
         {
             finish()
+            overridePendingTransition(0, 0)
             startActivity(Intent(this, MainActivity::class.java))
         }
 
@@ -69,7 +69,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             if (it.isSuccessful)
             {
                 finish()
+                overridePendingTransition(0, 0)
                 startActivity(Intent(this, MainActivity::class.java))
+            }
+            else
+            {
+                this.password.setError("Incrorrect password")
             }
         }
     }
@@ -84,6 +89,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             R.id.signup_text -> {
 
                 finish()
+                overridePendingTransition(0, 0)
                 startActivity(Intent(this, SignupActivity::class.java))
             }
         }

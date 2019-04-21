@@ -16,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase
 import java.util.regex.Pattern
 import org.apache.commons.validator.routines.EmailValidator;
 
-
 class SignupActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var signupButton: Button
@@ -79,6 +78,7 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
 
 
                 finish()
+                overridePendingTransition(0, 0)
                 startActivity(Intent(this, MainActivity::class.java))
             }
             else {
@@ -123,7 +123,6 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
             register = false
         }
 
-
         return register
     }
 
@@ -132,10 +131,8 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
         val validator = EmailValidator.getInstance()
 
         if (!validator.isValid(email)) {
-
             return false
         }
-
         return true
     }
 
@@ -146,9 +143,9 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
             R.id.signup_button -> {
                 registerUser()
             }
-
             R.id.login_text -> {
                 finish()
+                overridePendingTransition(0, 0)
                 startActivity(Intent(this, LoginActivity::class.java))
             }
         }
