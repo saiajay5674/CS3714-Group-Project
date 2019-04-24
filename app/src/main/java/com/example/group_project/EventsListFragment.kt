@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.card_view.view.*
 import org.w3c.dom.Text
 
 
+
 /**
  * A simple [Fragment] subclass.
  *
@@ -118,13 +119,14 @@ class EventsListFragment : Fragment() {
                 }
 
             })  // This gets the user object of the current User
+            val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
 
             holder.view.findViewById<ImageButton>(R.id.options).setOnClickListener {
 
                 val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
                 val inflater = popup.menuInflater
 
-                if (user!!.uid == events[position].host.uid)
+                if (user!!.equals(events[position].host))
                 {
                     inflater.inflate(R.menu.actions_creator, popup.menu)
                     popup.show()
@@ -136,7 +138,17 @@ class EventsListFragment : Fragment() {
                 }
 
             }
+
+            popup.setOnMenuItemClickListener {
+
+                when(it.title)
+                {
+
+                }
+            }
         }
+
+
 
 
         internal fun setEvents(events: List<Event>)

@@ -20,4 +20,23 @@ class User(uid: String, username: String, emailAddress: String, phoneNumber: Str
     }
 
     constructor() : this("", "", "", "")
+
+    override fun equals(other: Any?): Boolean {
+
+
+        if(other == null)
+        {
+            return false
+        }
+        else if (other.javaClass != User::class.java)
+        {
+            return false
+        }
+        else {
+
+            var user: User = other as User
+
+            return this.uid == user.uid
+        }
+    }
 }

@@ -15,7 +15,7 @@
             android:id="@+id/username"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="292dp" android:hint="Useranme"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="292dp" android:hint="Email address"/>
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"

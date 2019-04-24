@@ -86,7 +86,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             dialog.show(childFragmentManager, "dialog")
         }
 
-        val spinner: Spinner? = (getView()?.findViewById(R.id.add_event_sport) as? Spinner)
+        val spinner: Spinner? = (getView()?.findViewById(R.id.edit_event_sport) as? Spinner)
         // Create an ArrayAdapter using the string array and a default spinner layout
 
         ArrayAdapter.createFromResource(context, R.array.games, android.R.layout.simple_spinner_item).also { adapter ->

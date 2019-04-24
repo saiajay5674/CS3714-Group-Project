@@ -10,9 +10,13 @@
               android:label="fragment_events_list" tools:layout="@layout/fragment_events_list">
         <action android:id="@+id/action_eventsListFragment_to_eventsDisplayFragment"
                 app:destination="@id/eventsDisplayFragment"/>
+        <action android:id="@+id/action_eventsListFragment_to_updateEventFragment"
+                app:destination="@id/updateEventFragment"/>
     </fragment>
     <fragment android:id="@+id/profileFragment" android:name="com.example.group_project.ProfileFragment"
               android:label="fragment_profile" tools:layout="@layout/fragment_profile"/>
     <fragment android:id="@+id/eventsDisplayFragment" android:name="com.example.group_project.EventsDisplayFragment"
               android:label="fragment_events_display" tools:layout="@layout/fragment_events_display"/>
+    <fragment android:id="@+id/updateEventFragment" android:name="com.example.group_project.UpdateEventFragment"
+              android:label="fragment_update_event" tools:layout="@layout/fragment_update_event"/>
 </navigation>
