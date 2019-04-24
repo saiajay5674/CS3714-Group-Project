@@ -18,4 +18,6 @@ class User(uid: String, username: String, emailAddress: String, phoneNumber: Str
         this.emailAddress = emailAddress
         this.phoneNumber = phoneNumber
     }
+
+    constructor() : this("", "", "", "")
 }
