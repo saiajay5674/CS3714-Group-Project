@@ -85,7 +85,7 @@ class EventDialog: DialogFragment() {
                     val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
                     val ref = FirebaseDatabase.getInstance().getReference("events")
-                    val host = user?.username
+                    val host = user
                     val eventId = ref.push().key
 
                     val event = Event(eventId, sport, time, location, players, host!! )

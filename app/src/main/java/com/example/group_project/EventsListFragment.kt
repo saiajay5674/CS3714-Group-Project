@@ -2,15 +2,16 @@ package com.example.group_project
 
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
 import org.w3c.dom.Text
@@ -31,6 +32,7 @@ class EventsListFragment : Fragment() {
         //val model = activity.run { ViewModelProviders.of(this!!).get(EventViewModel::class.java) }
 
         recyclerView = view.findViewById(R.id.events_list)
+
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.events_list)
         val adapter = EventListAdapter()
@@ -93,11 +95,49 @@ class EventsListFragment : Fragment() {
             holder.view.findViewById<TextView>(R.id.date).text = events[position].time
             holder.view.findViewById<TextView>(R.id.sport).text = events[position].sport
             holder.view.findViewById<TextView>(R.id.location).text = events[position].location
-            holder.view.findViewById<TextView>(R.id.host).text = events[position].host
+            holder.view.findViewById<TextView>(R.id.host).text = events[position].host.username
             holder.view.itemView.setOnClickListener {
 
             }
+
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+            val ref = FirebaseDatabase.getInstance().getReference("users/" + uid)
+
+            var user: User? = null
+
+            ref.addValueEventListener(object: ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+                    //Does nothing
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+
+                    user = p0?.getValue(User::class.java)
+
+                }
+
+            })  // This gets the user object of the current User
+
+            holder.view.findViewById<ImageButton>(R.id.options).setOnClickListener {
+
+                val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
+                val inflater = popup.menuInflater
+
+                if (user!!.uid == events[position].host.uid)
+                {
+                    inflater.inflate(R.menu.actions_creator, popup.menu)
+                    popup.show()
+                }
+                else
+                {
+                    inflater.inflate(R.menu.actions_public, popup.menu)
+                    popup.show()
+                }
+
+            }
         }
+
 
         internal fun setEvents(events: List<Event>)
         {
