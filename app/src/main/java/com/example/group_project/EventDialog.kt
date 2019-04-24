@@ -47,7 +47,7 @@ class EventDialog: DialogFragment() {
 
             val placesApi = PlaceAPI.Builder().apiKey("AIzaSyAeMzjhWrb6ZCLmhkqzelmY6LD63e2_VPY").build(mainActivity)
 
-            placesAutocomplete = view?.findViewById(R.id.edit_event_location)
+            placesAutocomplete = view?.findViewById(R.id.add_event_location)
             placesAutocomplete?.setAdapter(PlacesAutoCompleteAdapter(activity!!.applicationContext, placesApi))
 
             placesAutocomplete?.onItemClickListener =
@@ -79,10 +79,10 @@ class EventDialog: DialogFragment() {
                 .setPositiveButton("Add Event") { dialog, it ->
 
 
-                    val sport = view?.findViewById<Spinner>(R.id.edit_event_sport)?.selectedItem.toString()
-                    val time = view?.findViewById<EditText>(R.id.edit_event_time)?.text.toString()
-                    val location = view?.findViewById<EditText>(R.id.edit_event_location)?.text.toString()
-                    val players = view?.findViewById<EditText>(R.id.edit_event_players_number)?.text.toString()
+                    val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
+                    val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
+                    val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
+                    val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
                     val ref = FirebaseDatabase.getInstance().getReference("events")
                     val host = user

@@ -29,7 +29,6 @@
             android:hint="Enter number of players"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/edit_event_location"/>
-
     <EditText
             android:layout_height="47dp"
             android:inputType="time"
@@ -46,16 +45,20 @@
             android:layout_height="wrap_content"
             android:id="@+id/edit_cancel" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_event_time"
-            app:layout_constraintEnd_toStartOf="@+id/edit_button"/>
+            app:layout_constraintEnd_toStartOf="@+id/edit_button"
+            app:layout_constraintTop_toBottomOf="@+id/edit_event_time"/>
     <Button
             android:text="Edit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/edit_button"
-            app:layout_constraintTop_toBottomOf="@+id/edit_event_time" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/edit_cancel"
-    />
+            app:layout_constraintTop_toBottomOf="@+id/edit_event_time"/>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
