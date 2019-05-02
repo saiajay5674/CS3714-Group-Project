@@ -108,6 +108,12 @@ dependencies {
 
     //Auto-Complete
     implementation 'com.github.mukeshsolanki:Google-Places-AutoComplete-EditText:0.0.6'
+
+
+    def nav_version = "1.0.0-alpha11"
+
+    implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui-ktx:$nav_version" // use -ktx for Kotlin
 }
 
 apply plugin: 'com.google.gms.google-services'
