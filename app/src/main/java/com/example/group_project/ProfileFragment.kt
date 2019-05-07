@@ -70,8 +70,6 @@ class ProfileFragment : Fragment() {
 
         })  // This gets the user object of the current User
 
-       // val user = firebaseAuth.currentUser
-
 
         logoutButton.setOnClickListener {
 

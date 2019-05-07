@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -141,6 +142,8 @@ class EventsListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+            val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
+
 
 
             holder.view.findViewById<TextView>(R.id.date).text = events[position].time
@@ -152,6 +155,8 @@ class EventsListFragment : Fragment() {
             holder.view.itemView.setOnClickListener {
 
                 openFragment(EventsDisplayFragment())
+
+                model.setvalue(events[position].time, events[position].sport, events[position].location, events[position].host.username,getDistance(events[position].location).toString())
             }
 
             val uid = FirebaseAuth.getInstance().currentUser?.uid
