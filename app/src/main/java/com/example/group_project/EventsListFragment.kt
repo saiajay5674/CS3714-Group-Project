@@ -96,7 +96,7 @@ class EventsListFragment : Fragment() {
             holder.view.findViewById<TextView>(R.id.date).text = events[position].time
             holder.view.findViewById<TextView>(R.id.sport).text = events[position].sport
             holder.view.findViewById<TextView>(R.id.location).text = events[position].location
-            holder.view.findViewById<TextView>(R.id.host).text = events[position].host.username
+            holder.view.findViewById<TextView>(R.id.host).text = "Host " + events[position].host.username
             holder.view.itemView.setOnClickListener {
 
             }
