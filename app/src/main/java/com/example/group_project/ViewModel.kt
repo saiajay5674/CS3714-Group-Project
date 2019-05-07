@@ -12,7 +12,6 @@ class ViewModel: ViewModel() {
     private var userName = MutableLiveData<String>()
     private var distance = MutableLiveData<String>()
 
-
     fun setvalue(time : String, sport: String, location: String, userName: String, distance : String){
         this.time.value = time
         this.sport.value = sport
@@ -46,10 +45,4 @@ class ViewModel: ViewModel() {
 
         return  distance
     }
-
-//    holder.view.findViewById<TextView>(R.id.date).text = events[position].time
-//    holder.view.findViewById<TextView>(R.id.sport).text = events[position].sport
-//    holder.view.findViewById<TextView>(R.id.location).text = events[position].location
-//    holder.view.findViewById<TextView>(R.id.host).text = "Host " + events[position].host.username
-//    holder.view.findVie
 }
