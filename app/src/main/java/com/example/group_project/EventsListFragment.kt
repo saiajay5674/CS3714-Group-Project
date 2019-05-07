@@ -24,10 +24,6 @@ import org.w3c.dom.Text
 import java.util.*
 
 
-/**
- * A simple [Fragment] subclass.
- *
- */
 class EventsListFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var database: FirebaseDatabase
