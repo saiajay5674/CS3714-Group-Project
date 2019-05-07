@@ -155,7 +155,7 @@ class EventsListFragment : Fragment() {
 
             holder.view.itemView.setOnClickListener {
 
-                it.findNavController().navigate(R.id.action_eventsListFragment_to_eventsDisplayFragment)
+                openFragment(EventsDisplayFragment())
             }
 
             val uid = FirebaseAuth.getInstance().currentUser?.uid
@@ -262,6 +262,13 @@ class EventsListFragment : Fragment() {
                 }
             }
         }
+    }
+
+     fun openFragment(fragment: Fragment) {
+        val transaction = mainActivity.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
 

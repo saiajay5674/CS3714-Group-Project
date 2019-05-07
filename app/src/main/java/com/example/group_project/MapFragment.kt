@@ -126,7 +126,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
 
                 // mMap!!.animateCamera(CameraUpdateFactory.zoomTo(11f))
-                mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f))
+                mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
             }
         }
     }
