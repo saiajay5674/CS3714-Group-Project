@@ -8,8 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,17 +31,47 @@ class ProfileFragment : Fragment() {
     private lateinit var logoutButton: Button
     private lateinit var firebaseAuth: FirebaseAuth
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private lateinit var userName: TextView
+    private lateinit var email: TextView
+
+    var user: User? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         logoutButton = view.findViewById(R.id.logout)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        val user = firebaseAuth.currentUser
+        userName = view.findViewById(R.id.username)
+        email = view.findViewById(R.id.email)
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        val ref = FirebaseDatabase.getInstance().getReference("users/" + uid)
+
+
+
+        ref.addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                //Does nothing
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+
+                user = p0?.getValue(User::class.java)
+
+
+                userName.text = user?.username
+                email.text = user?.emailAddress
+
+
+            }
+
+        })  // This gets the user object of the current User
+
+       // val user = firebaseAuth.currentUser
+
 
         logoutButton.setOnClickListener {
 
