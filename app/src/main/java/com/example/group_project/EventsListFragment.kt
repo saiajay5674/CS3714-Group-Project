@@ -1,9 +1,9 @@
 package com.example.group_project
 
 
+
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -11,16 +11,14 @@ import android.os.Bundle
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+import android.location.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
-import org.w3c.dom.Text
 import java.util.*
 
 
@@ -31,6 +29,7 @@ class EventsListFragment : Fragment() {
     lateinit var locationManager: LocationManager
     lateinit var mainActivity: MainActivity
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -38,9 +37,32 @@ class EventsListFragment : Fragment() {
 
     var latitude: Double? = null
     var longitude: Double? = null
+    var currentLocation: Location? = null
 
     companion object {
         private const val PERMISSION_CODE: Int = 1000
+        private const val UPDATE_INTERVAL: Long = 2000
+        private const val FASTEST_INTERVAL: Long = 2000
+
+    }
+
+    val locationListener: LocationListener = object : LocationListener {
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onProviderEnabled(provider: String?) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onProviderDisabled(provider: String?) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onLocationChanged(location: Location) {
+
+        }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,10 +78,19 @@ class EventsListFragment : Fragment() {
         val adapter = EventListAdapter()
         database = FirebaseDatabase.getInstance()
 
+        locationManager = mainActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if(checkLocationPermission())
+        {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1f, locationListener)
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        }
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        locationManager = mainActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+
 
         val ref = database.getReference("events")
 
@@ -90,12 +121,7 @@ class EventsListFragment : Fragment() {
 
     fun updateUserLocation()
     {
-        if(checkLocationPermission())
-        {
-            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            latitude = location?.latitude
-            longitude = location?.longitude
-        }
+
     }
 
     inner class EventListAdapter():
@@ -120,23 +146,20 @@ class EventsListFragment : Fragment() {
             val location = geocoder.getFromLocationName(address, 1)[0]
 
 
-            val currentLocation = Location("Current Location")
 
-            updateUserLocation()
-            if(latitude == null || longitude == null || location == null)
+
+            //checkLocationPermission()
+            if(currentLocation == null)
             {
                 return -1f
             }
-
-            currentLocation.latitude = latitude!!
-            currentLocation.longitude = longitude!!
 
             val eventLocation = Location("Evnt Location")
             eventLocation.longitude = location.longitude
             eventLocation.latitude = location.latitude
 
 
-            return currentLocation.distanceTo(eventLocation) / 1609.34f
+            return currentLocation!!.distanceTo(eventLocation) / 1609.34f
 
         }
 
@@ -219,7 +242,12 @@ class EventsListFragment : Fragment() {
             }
         }
     }
-
+     fun openFragment(fragment: Fragment) {
+        val transaction = mainActivity.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
     private fun checkLocationPermission(): Boolean {
 
@@ -260,12 +288,6 @@ class EventsListFragment : Fragment() {
         }
     }
 
-     fun openFragment(fragment: Fragment) {
-        val transaction = mainActivity.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
 
 
 }
