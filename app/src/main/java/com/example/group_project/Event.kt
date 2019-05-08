@@ -1,8 +1,9 @@
 package com.example.group_project
 
+import java.io.Serializable
 import java.util.*
 
-class Event (event_id: String, sport: String, date: Date, location : String, players: String, host: User) {
+class Event (event_id: String, sport: String, date: Date, location : String, players: String, host: User) : Serializable {
 
     var event_id: String
     var sport: String

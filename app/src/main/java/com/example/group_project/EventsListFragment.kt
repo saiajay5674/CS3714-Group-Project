@@ -2,7 +2,10 @@ package com.example.group_project
 
 
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -14,8 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
+import android.net.Uri
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -108,8 +113,6 @@ class EventsListFragment : Fragment() {
         WorkManager.getInstance().enqueue(request)
 
 
-
-
         val ref = database.getReference("events")
 
         ref.addValueEventListener(object: ValueEventListener{
@@ -131,6 +134,8 @@ class EventsListFragment : Fragment() {
                 }
 
                 adapter.setEvents(events)
+
+
             }
 
         })

@@ -1,7 +1,7 @@
 package com.example.group_project
 
-import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -15,6 +15,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.*
 import kotlinx.coroutines.coroutineScope
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 class NotificationWorker (context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
