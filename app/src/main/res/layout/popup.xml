@@ -7,7 +7,7 @@
                                                    android:orientation="vertical">
     <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="51dp"
             android:inputType="number"
             android:ems="10"
             android:id="@+id/add_event_players_number" app:layout_constraintEnd_toEndOf="parent"
@@ -17,29 +17,31 @@
             app:layout_constraintTop_toBottomOf="@+id/add_event_location"/>
     <Spinner
             android:id="@+id/add_event_sport"
-            android:layout_height="43dp"
+            android:layout_height="51dp"
             android:layout_width="match_parent"
             android:entries="@array/games"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-    />
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <EditText
+    <TextView
             android:layout_height="47dp"
             android:inputType="time"
             android:ems="10"
             android:id="@+id/add_event_time"
             android:layout_width="match_parent"
             android:hint="Choose time"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/add_event_players_number"/>
 
     <AutoCompleteTextView
             android:id="@+id/add_event_location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/add_event_sport"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:hint="Event location"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:hint="Event location"
+            android:layout_height="51dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

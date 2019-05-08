@@ -4,7 +4,9 @@ import `in`.madapps.placesautocomplete.PlaceAPI
 import `in`.madapps.placesautocomplete.adapter.PlacesAutoCompleteAdapter
 import `in`.madapps.placesautocomplete.model.Place
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -19,9 +21,17 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
 import kotlinx.android.synthetic.main.activity_login.*
+import android.widget.DatePicker
+import java.util.Calendar
+import android.widget.TextView
+import android.util.Log
 
 
-class EventDialog: DialogFragment() {
+
+
+
+
+class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private var placesAutocomplete : AutoCompleteTextView? = null
     private lateinit var firebaseAuth: FirebaseAuth
@@ -33,7 +43,9 @@ class EventDialog: DialogFragment() {
         mainActivity = context as MainActivity
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{//, DatePickerDialog.OnDateSetListener {
         return activity?.let {
 
             val builder = AlertDialog.Builder(it)
@@ -73,14 +85,30 @@ class EventDialog: DialogFragment() {
 
             })
 
+            view?.findViewById<TextView>(R.id.add_event_time)?.setOnClickListener {
+
+                showDatePickerDialog()
+
+               // Toast.makeText(context!!, "clicked", Toast.LENGTH_SHORT).show()
+
+            }
+
+
             builder.setView(view)
                 // Add action buttons
                 .setMessage("Create a new Event")
                 .setPositiveButton("Add Event") { dialog, it ->
 
 
+                     //val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
+
+
+
+
+
+
                     val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
-                    val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
+
                     val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
                     val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
@@ -88,7 +116,7 @@ class EventDialog: DialogFragment() {
                     val host = user
                     val eventId = ref.push().key
 
-                    val event = Event(eventId, sport, time, location, players, host!! )
+                    val event = Event(eventId, sport, "", location, players, host!! )
 
                     ref.child(eventId).setValue(event).addOnCompleteListener {
 
@@ -101,7 +129,42 @@ class EventDialog: DialogFragment() {
             builder.create()
 
         } ?: throw IllegalStateException("Activity cannot be null")
+
+
+
     }
+
+    override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
+        // Do something with the date chosen by the user
+
+       // view?.findViewById<TextView>(R.id.add_event_time)?.text = year.toString()
+
+
+        Log.d("year is -------------------", day.toString())
+    }
+
+
+    fun showDatePickerDialog() {
+
+       // val datePickerDialog = DatePickerDialog()
+
+
+        val datePickerDialog = DatePickerDialog(
+            context!!,
+            this,
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.show()
+    }
+
+//    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+//      //  val date = "month/day/year: $month/$dayOfMonth/$year"
+//
+//        view?.findViewById<TextView>(R.id.add_event_time)?.text = year.toString()
+//    }
+
 
 
 }
