@@ -26,6 +26,7 @@ import android.widget.TextView
 import android.util.Log
 import android.view.View
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -146,9 +147,13 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
                     val host = user
                     val eventId = ref.push().key
 
+                    var players = ArrayList<User>()
+
+                    players.add(host!!)
+
                     val date = Date(year, month, day, hour, minute)
 
-                    val event = Event(eventId, sport, date, location, playerCounter.toString(), host!! )
+                    val event = Event(eventId, sport, date, location, playerCounter.toString(), host!!, players )
 
                     ref.child(eventId).setValue(event).addOnCompleteListener {
 
