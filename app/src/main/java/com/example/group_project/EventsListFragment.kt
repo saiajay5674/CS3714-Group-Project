@@ -145,9 +145,6 @@ class EventsListFragment : Fragment() {
         {
             val location = geocoder.getFromLocationName(address, 1)[0]
 
-
-
-
             //checkLocationPermission()
             if(currentLocation == null)
             {
@@ -242,7 +239,7 @@ class EventsListFragment : Fragment() {
             }
         }
     }
-     fun openFragment(fragment: Fragment) {
+    fun openFragment(fragment: Fragment) {
         val transaction = mainActivity.supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)

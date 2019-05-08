@@ -41,17 +41,16 @@
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/ic_magnify"
             />
-            <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/magnify_icon"
-                    android:layout_centerVertical="true"
-                    android:textColor="#000"
-                    android:id="@+id/input_search"
-                    android:background="@null"
-                    android:imeOptions="actionSearch"
-                    android:hint="Enter Address, City or Zipcode"
-            />
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/magnify_icon"
+                android:textColor="#000"
+                android:id="@+id/input_search"
+                android:background="@null"
+                android:imeOptions="actionSearch"
+                android:hint="Enter Address, City or Zipcode"
+                android:layout_marginLeft="0dp"/>
 
     </RelativeLayout>
 

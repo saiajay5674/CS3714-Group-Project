@@ -42,11 +42,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/sport" app:layout_constraintStart_toStartOf="parent"
                 android:textSize="24sp"/>
         <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_vert"
+                android:layout_width="19dp"
+                android:layout_height="35dp" app:srcCompat="@drawable/ic_vert"
                 android:id="@+id/options"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
-        />
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
         <TextView
                 android:text="TextView"
                 android:layout_width="wrap_content"

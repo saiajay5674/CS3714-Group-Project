@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -19,12 +22,47 @@ private const val ARG_PARAM2 = "param2"
  */
 class EventsDisplayFragment : Fragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events_display, container, false)
+        val v =  inflater.inflate(R.layout.fragment_events_display, container, false)
+
+        val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
+
+        model.getUserName().observe(this, Observer<String> { value ->
+
+            v.findViewById<TextView>(R.id.ownerTxt).text = value
+
+        })
+
+
+        model.getSport().observe(this, Observer<String> { value ->
+
+            v.findViewById<TextView>(R.id.sportTxt).text = value
+
+        })
+
+
+        model.getTime().observe(this, Observer<String> { value ->
+
+            v.findViewById<TextView>(R.id.timeTxt).text = value
+
+        })
+
+        model.getLocation().observe(this, Observer<String> { value ->
+
+            v.findViewById<TextView>(R.id.addressTxt).text = value
+
+        })
+
+        model.getDistance().observe(this, Observer<String> { value ->
+
+            v.findViewById<TextView>(R.id.distance).text = "Dstance:    " + value + " miles"
+
+        })
+
+
+
+        return v
     }
 
 

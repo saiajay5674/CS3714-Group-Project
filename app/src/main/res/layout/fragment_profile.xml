@@ -20,13 +20,14 @@
 
     <Button
             android:text="Logout"
-            android:layout_width="108dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="33dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/logout"
-            android:layout_marginBottom="4dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.511"/>
+            android:layout_marginBottom="8dp"
+            android:textSize="12dp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+    />
     <TextView
             android:text="user"
             android:layout_width="wrap_content"
@@ -34,49 +35,60 @@
             android:id="@+id/username" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/profile_image" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/username" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            android:gravity="center" android:id="@+id/linearLayout">
-        <ImageView
-                android:src="@mipmap/ic_mail"
-                android:layout_width="77dp"
-                android:layout_height="match_parent" android:id="@+id/mail" android:layout_weight="1"/>
-        <TextView
-                android:text="email@gmail.com"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/email" android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="18dp"/>
-    </LinearLayout>
 
     <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            android:gravity="center"
-            android:layout_marginTop="40dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-        <ImageView
-                android:src="@mipmap/ic_phone"
-                android:layout_width="77dp"
-                android:layout_height="match_parent"
-                android:id="@+id/userPhone"
-                android:layout_weight="1"/>
-        <TextView
-                android:text="000 - 000 - 0000"
+            android:layout_height="wrap_content" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginTop="170dp"
+            app:layout_constraintTop_toBottomOf="@+id/username" android:id="@+id/linearLayout6">
+        <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/phone"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="18dp"/>
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center" android:id="@+id/linearLayout">
+            <ImageView
+                    android:src="@mipmap/ic_mail"
+                    android:layout_width="77dp"
+                    android:layout_height="match_parent" android:id="@+id/mail" android:layout_weight="1"/>
+            <TextView
+                    android:text="email@gmail.com"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/email" android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="18dp"/>
+        </LinearLayout>
+        <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="?android:attr/listDivider"
+        />
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:gravity="center">
+            <ImageView
+                    android:src="@mipmap/ic_phone"
+                    android:layout_width="77dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/userPhone"
+                    android:layout_weight="1"/>
+            <TextView
+                    android:text="000 - 000 - 0000"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phone"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="18dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 
