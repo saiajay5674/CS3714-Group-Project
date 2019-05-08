@@ -16,10 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import android.location.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class EventsListFragment : Fragment() {
@@ -88,6 +93,17 @@ class EventsListFragment : Fragment() {
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
+
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val request = PeriodicWorkRequest
+            .Builder(NotificationWorker::class.java, 1, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance().enqueue(request)
 
 
 
