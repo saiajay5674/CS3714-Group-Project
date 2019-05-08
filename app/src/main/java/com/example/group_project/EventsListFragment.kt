@@ -196,7 +196,18 @@ class EventsListFragment : Fragment() {
             holder.view.findViewById<TextView>(R.id.sport).text = events[position].sport
             holder.view.findViewById<TextView>(R.id.location).text = events[position].location
             holder.view.findViewById<TextView>(R.id.host).text = "Host " + events[position].host.username
-            holder.view.findViewById<TextView>(R.id.distance).text = "Distance " + getDistance(events[position].location).toString() + " mi"
+
+            if (getDistance(events[position].location) < 1)
+            {
+                holder.view.findViewById<TextView>(R.id.distance).text = "Distance: < 1 mi"
+
+            }
+            else
+            {
+                holder.view.findViewById<TextView>(R.id.distance).text = "Distance " + getDistance(events[position].location).toString() + " mi"
+
+            }
+
 
             holder.view.itemView.setOnClickListener {
 

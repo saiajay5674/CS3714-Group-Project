@@ -8,52 +8,159 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/itemView">
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/date" app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                android:textSize="24sp"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/location" android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@+id/date" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/sport" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/location" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.4"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/host"
-                app:layout_constraintTop_toBottomOf="@+id/sport" app:layout_constraintStart_toStartOf="parent"
-                android:textSize="24sp"/>
-        <ImageButton
-                android:layout_width="19dp"
-                android:layout_height="35dp" app:srcCompat="@drawable/ic_vert"
-                android:id="@+id/options"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
-        <TextView
-                android:text="TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/distance" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/host"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/options" app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintVertical_bias="1.0" android:textSize="18sp"/>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp" app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_weight="1">
+
+                    <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="0dp" app:srcCompat="@drawable/googleg_standard_color_18"
+                            android:id="@+id/imageView" android:layout_weight="1"
+                            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/linearLayout16"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="236dp"
+                            android:layout_height="114dp" android:layout_weight="1"
+                            app:layout_constraintStart_toEndOf="@+id/imageView"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:id="@+id/linearLayout16" app:layout_constraintEnd_toStartOf="@+id/linearLayout15"
+                            app:layout_constraintVertical_bias="0.0">
+                        <TextView
+                                android:text="TextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:id="@+id/sport" app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintVertical_bias="0.4" android:textSize="24sp"/>
+                        <TextView
+                                android:text="TextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/host"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:textSize="14sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="37dp"
+                            android:layout_height="0dp" android:layout_weight="1"
+                            android:id="@+id/linearLayout15"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/linearLayout16"
+                            app:layout_constraintHorizontal_bias="1.0" app:layout_constraintVertical_bias="0.0">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            <ImageButton
+                                    android:layout_width="36dp"
+                                    android:layout_height="31dp" app:srcCompat="@drawable/ic_vert"
+                                    android:id="@+id/options"
+                                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintHorizontal_bias="1.0"
+                            />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" android:id="@+id/linearLayout18"
+                            app:layout_constraintEnd_toStartOf="@+id/linearLayout17">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                            <TextView
+                                    android:text="TextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    android:id="@+id/date" app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    android:textSize="18sp"
+                                    app:layout_constraintBottom_toTopOf="@+id/distance"/>
+                            <TextView
+                                    android:text="TextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/distance" app:layout_constraintEnd_toEndOf="parent"
+                                    android:textSize="18sp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintTop_toBottomOf="@+id/date"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintVertical_bias="0.909"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:id="@+id/linearLayout17" app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/linearLayout18">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            <TextView
+                                    android:text="TextView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="37dp"
+                                    android:id="@+id/location" android:textSize="18sp"
+                                    app:layout_constraintTop_toBottomOf="@+id/date"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="7dp"
+                                    app:layout_constraintBottom_toTopOf="@+id/join_button"/>
+                            <Button
+                                    android:text="Join"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/join_button" app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/options"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintVertical_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
