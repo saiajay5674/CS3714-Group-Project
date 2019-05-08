@@ -14,7 +14,7 @@
         <TextView
                 android:text="Ower"
                 android:layout_width="match_parent"
-                android:layout_height="34dp" android:id="@+id/Owner" android:textStyle="bold" android:textSize="18dp"/>
+                android:layout_height="34dp" android:id="@+id/timeTitle" android:textStyle="bold" android:textSize="18dp"/>
         <TextView
                 android:text="name"
                 android:layout_width="match_parent"

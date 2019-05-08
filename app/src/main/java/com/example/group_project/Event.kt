@@ -1,10 +1,12 @@
 package com.example.group_project
 
-class Event (event_id: String, sport: String, time: String, location : String, players: String, host: User) {
+import java.util.*
+
+class Event (event_id: String, sport: String, calendar: Calendar, location : String, players: String, host: User) {
 
     var event_id: String
     var sport: String
-    var time: String
+    var calendar: Calendar
     var location : String
     var players: String
     var host: User
@@ -13,10 +15,10 @@ class Event (event_id: String, sport: String, time: String, location : String, p
         this.event_id = event_id
         this.sport = sport
         this.location = location
-        this.time = time
+        this.calendar = calendar
         this.players = players
         this.host = host
     }
 
-    constructor() : this("","","","","", User())
+    constructor() : this("","", Calendar.getInstance(),"","", User())
 }

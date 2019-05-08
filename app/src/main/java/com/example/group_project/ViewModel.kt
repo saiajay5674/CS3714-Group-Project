@@ -2,18 +2,19 @@ package com.example.group_project
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.*
 
 
 class ViewModel: ViewModel() {
 
-    private var time = MutableLiveData<String>()
+    private var calendar = MutableLiveData<Calendar>()
     private var sport = MutableLiveData<String>()
     private var location = MutableLiveData<String>()
     private var userName = MutableLiveData<String>()
     private var distance = MutableLiveData<String>()
 
-    fun setvalue(time : String, sport: String, location: String, userName: String, distance : String){
-        this.time.value = time
+    fun setvalue(calendar : Calendar, sport: String, location: String, userName: String, distance : String){
+        this.calendar.value = calendar
         this.sport.value = sport
         this.location.value = location
         this.userName.value = userName
@@ -21,9 +22,9 @@ class ViewModel: ViewModel() {
 
     }
 
-    fun getTime(): MutableLiveData<String>{
+    fun getCalendar(): MutableLiveData<Calendar>{
 
-        return time
+        return calendar
     }
 
     fun getSport(): MutableLiveData<String>{

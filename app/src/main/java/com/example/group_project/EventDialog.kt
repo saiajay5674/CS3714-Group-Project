@@ -25,24 +25,36 @@ import android.widget.DatePicker
 import java.util.Calendar
 import android.widget.TextView
 import android.util.Log
+import android.view.View
 
 
-
-
-
-
-class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
+class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private var placesAutocomplete : AutoCompleteTextView? = null
     private lateinit var firebaseAuth: FirebaseAuth
 
     lateinit var mainActivity:MainActivity
+
+    lateinit var dateTextView: TextView
     lateinit var timeTextView: TextView
+
+    var calendar = Calendar.getInstance()
+
+    var year: Int = 0
+    var month: Int = 0
+    var day: Int = 0
+
+    var hour: Int = 0
+    var minute: Int = 0
+
+    private var playerCounterTxt: TextView? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
+
+    private var playerCounter = 1
 
 
 
@@ -58,7 +70,10 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
             firebaseAuth = FirebaseAuth.getInstance()
             val userID = firebaseAuth.currentUser?.uid
 
+            dateTextView = view.findViewById(R.id.add_event_date)
             timeTextView = view.findViewById(R.id.add_event_time)
+
+            playerCounterTxt = view.findViewById(R.id.playerCounterTxt)
 
             val placesApi = PlaceAPI.Builder().apiKey("AIzaSyAeMzjhWrb6ZCLmhkqzelmY6LD63e2_VPY").build(mainActivity)
 
@@ -88,12 +103,29 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
             })
 
-            view?.findViewById<TextView>(R.id.add_event_time)?.setOnClickListener {
+            dateTextView?.setOnClickListener {
 
                 showDatePickerDialog()
+            }
 
-               // Toast.makeText(context!!, "clicked", Toast.LENGTH_SHORT).show()
+            timeTextView?.setOnClickListener {
 
+                showTimePickerDialog()
+            }
+
+
+            view?.findViewById<Button>(R.id.plusBtn)?.setOnClickListener {
+
+                playerCounter++
+                playerCounterTxt!!.setText((playerCounter.toString()))
+            }
+
+
+            view?.findViewById<Button>(R.id.minusBtn)?.setOnClickListener {
+                if (playerCounter != 1) {
+                    playerCounter--
+                    playerCounterTxt!!.setText((playerCounter.toString()))
+                }
             }
 
 
@@ -106,20 +138,21 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
                      //val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
 
 
-
-
-
-
                     val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
                     val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
-                    val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
+                   // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
                     val ref = FirebaseDatabase.getInstance().getReference("events")
                     val host = user
                     val eventId = ref.push().key
 
-                    val event = Event(eventId, sport, "", location, players, host!! )
+
+                  //  var timeDate = timeTextView.text.toString() +" "+ dateTextView.toString()
+
+                    calendar.set(year, month, day, hour, minute)
+
+                    val event = Event(eventId, sport, calendar, location, playerCounter.toString(), host!! )
 
                     ref.child(eventId).setValue(event).addOnCompleteListener {
 
@@ -139,34 +172,46 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
 
-        timeTextView.text = year.toString()
+        this.year = year
+        this.month = month
+        this.day = day
 
-        Log.d("year is -------------------", year.toString())
+        dateTextView.text = month.toString() + "/" + day.toString() + "/" + year.toString()
+
     }
 
+    override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
+
+        this.hour = hour
+        this.minute = minute
+
+        timeTextView.text = hour.toString() + ":" + minute.toString() +  "    "
+
+    }
 
     fun showDatePickerDialog() {
-
-       // val datePickerDialog = DatePickerDialog()
-
 
         val datePickerDialog = DatePickerDialog(
             context!!,
             this,
             Calendar.getInstance().get(Calendar.YEAR),
             Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        )
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+
         datePickerDialog.show()
     }
 
-//    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-//      //  val date = "month/day/year: $month/$dayOfMonth/$year"
-//
-//        view?.findViewById<TextView>(R.id.add_event_time)?.text = year.toString()
-//    }
+    fun showTimePickerDialog(){
 
+        val timePickerDialog = TimePickerDialog(
+            context!!,
+            this,
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
+            Calendar.getInstance().get(Calendar.MINUTE),
+            false)
 
+        timePickerDialog.show()
+    }
 
 }
 

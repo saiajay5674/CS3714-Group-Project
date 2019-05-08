@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,9 +43,9 @@ class EventsDisplayFragment : Fragment() {
         })
 
 
-        model.getTime().observe(this, Observer<String> { value ->
+        model.getCalendar().observe(this, Observer<Calendar> { value ->
 
-            v.findViewById<TextView>(R.id.timeTxt).text = value
+            v.findViewById<TextView>(R.id.timeTxt).text = value.time.toString()
 
         })
 
