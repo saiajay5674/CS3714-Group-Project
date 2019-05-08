@@ -7,14 +7,14 @@ import java.util.*
 
 class ViewModel: ViewModel() {
 
-    private var calendar = MutableLiveData<Calendar>()
+    private var date = MutableLiveData<Date>()
     private var sport = MutableLiveData<String>()
     private var location = MutableLiveData<String>()
     private var userName = MutableLiveData<String>()
     private var distance = MutableLiveData<String>()
 
-    fun setvalue(calendar : Calendar, sport: String, location: String, userName: String, distance : String){
-        this.calendar.value = calendar
+    fun setvalue(date : Date, sport: String, location: String, userName: String, distance : String){
+        this.date.value = date
         this.sport.value = sport
         this.location.value = location
         this.userName.value = userName
@@ -22,9 +22,9 @@ class ViewModel: ViewModel() {
 
     }
 
-    fun getCalendar(): MutableLiveData<Calendar>{
+    fun getCalendar(): MutableLiveData<Date>{
 
-        return calendar
+        return date
     }
 
     fun getSport(): MutableLiveData<String>{

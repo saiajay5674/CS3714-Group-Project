@@ -22,10 +22,10 @@ import com.google.firebase.database.ValueEventListener
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
 import kotlinx.android.synthetic.main.activity_login.*
 import android.widget.DatePicker
-import java.util.Calendar
 import android.widget.TextView
 import android.util.Log
 import android.view.View
+import java.util.*
 
 
 class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -38,7 +38,6 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
     lateinit var dateTextView: TextView
     lateinit var timeTextView: TextView
 
-    var calendar = Calendar.getInstance()
 
     var year: Int = 0
     var month: Int = 0
@@ -147,12 +146,9 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
                     val host = user
                     val eventId = ref.push().key
 
+                    val date = Date(year, month, day, hour, minute)
 
-                  //  var timeDate = timeTextView.text.toString() +" "+ dateTextView.toString()
-
-                    calendar.set(year, month, day, hour, minute)
-
-                    val event = Event(eventId, sport, calendar, location, playerCounter.toString(), host!! )
+                    val event = Event(eventId, sport, date, location, playerCounter.toString(), host!! )
 
                     ref.child(eventId).setValue(event).addOnCompleteListener {
 

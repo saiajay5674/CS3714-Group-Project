@@ -43,9 +43,9 @@ class EventsDisplayFragment : Fragment() {
         })
 
 
-        model.getCalendar().observe(this, Observer<Calendar> { value ->
+        model.getCalendar().observe(this, Observer<Date> { value ->
 
-            v.findViewById<TextView>(R.id.timeTxt).text = value.time.toString()
+            v.findViewById<TextView>(R.id.timeTxt).text = value.toString()
 
         })
 

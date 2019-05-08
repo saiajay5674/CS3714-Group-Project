@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.location.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
@@ -23,6 +24,7 @@ import androidx.work.WorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -178,14 +180,23 @@ class EventsListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
 
+            val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
-            holder.view.findViewById<TextView>(R.id.date).text = events[position].time
+
+
+
+            val dateFormat = SimpleDateFormat("hh:mm a yyyy-MM-dd")
+
+            holder.view.findViewById<TextView>(R.id.date).text = dateFormat.format(events[position].date)
             holder.view.findViewById<TextView>(R.id.sport).text = events[position].sport
             holder.view.findViewById<TextView>(R.id.location).text = events[position].location
             holder.view.findViewById<TextView>(R.id.host).text = "Host " + events[position].host.username
             holder.view.findViewById<TextView>(R.id.distance).text = "Distance " + getDistance(events[position].location).toString() + " mi"
 
             holder.view.itemView.setOnClickListener {
+
+                model.setvalue(events[position].date, events[position].sport, events[position].location, events[position].host.username, getDistance(events[position].location).toString())
+
 
                 openFragment(EventsDisplayFragment())
             }
@@ -236,7 +247,6 @@ class EventsListFragment : Fragment() {
                 }
             }
         }
-
 
 
 
