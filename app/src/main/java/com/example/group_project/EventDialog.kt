@@ -15,10 +15,6 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
 import kotlinx.android.synthetic.main.activity_login.*
 import android.widget.DatePicker
@@ -26,8 +22,10 @@ import android.widget.TextView
 import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
+import com.google.firebase.database.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.min
 
 
 class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -160,7 +158,12 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
                 players.add(host!!)
 
-                val date = Date(year, month, day, hour, minute)
+
+                val calendar = Calendar.getInstance()
+                calendar.set(year, month, day, hour, minute, 0)
+
+                Log.d("Calendar----------------------------->", calendar.time.toString())
+
 
                 if (location.isEmpty()) {
                     view?.findViewById<EditText>(R.id.add_event_location)?.setError("Please choose location")
@@ -182,7 +185,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                     addEvent = false
                 }
                 if (addEvent) {
-                    val event = Event(eventId, sport, date, location, playerCounter.toString(), host!!, players)
+                    val event = Event(eventId, sport, calendar.time, location, playerCounter.toString(), host!!, players)
 
                     ref.child(eventId).setValue(event).addOnCompleteListener {
 

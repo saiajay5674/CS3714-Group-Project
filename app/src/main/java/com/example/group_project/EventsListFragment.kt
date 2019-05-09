@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
-import android.opengl.Visibility
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -27,7 +26,6 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -37,6 +35,7 @@ class EventsListFragment : Fragment() {
     lateinit var geocoder: Geocoder
     lateinit var locationManager: LocationManager
     lateinit var mainActivity: MainActivity
+    lateinit var currentUser: User
 
 
     override fun onAttach(context: Context) {
@@ -44,15 +43,10 @@ class EventsListFragment : Fragment() {
         mainActivity = context as MainActivity
     }
 
-    var latitude: Double? = null
-    var longitude: Double? = null
     var currentLocation: Location? = null
 
     companion object {
         private const val PERMISSION_CODE: Int = 1000
-        private const val UPDATE_INTERVAL: Long = 2000
-        private const val FASTEST_INTERVAL: Long = 2000
-
     }
 
     val locationListener: LocationListener = object : LocationListener {
@@ -96,18 +90,40 @@ class EventsListFragment : Fragment() {
         }
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(context).apply { isAutoMeasureEnabled = false }
 
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
+//        val constraints = Constraints.Builder()
+//            .setRequiredNetworkType(NetworkType.CONNECTED)
+//            .build()
+//
+//        val request = PeriodicWorkRequest
+//            .Builder(NotificationWorker::class.java, 1, TimeUnit.MINUTES)
+//            .setConstraints(constraints)
+//            .build()
+//
+//        WorkManager.getInstance().enqueue(request)
 
-        val request = PeriodicWorkRequest
-            .Builder(NotificationWorker::class.java, 1, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .build()
 
-        WorkManager.getInstance().enqueue(request)
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+
+        val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
+
+
+        userRef.addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                //Does nothing
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+
+                if (p0 != null)
+                {
+                    currentUser = p0?.getValue(User::class.java)!!
+                }
+            }
+
+        })  // This gets the user object of the current User
 
 
         val ref = database.getReference("events")
@@ -161,9 +177,15 @@ class EventsListFragment : Fragment() {
             return events.size
         }
 
-        fun getDistance(address: String): Float
+        fun getDistance(address: String): Float?
         {
-            val location = geocoder.getFromLocationName(address, 1)[0]
+            var location: Address?
+
+            try {
+                location = geocoder.getFromLocationName(address, 1)[0]
+            }catch (e : java.lang.Exception) {
+                location = null
+            }
 
             //checkLocationPermission()
             if(currentLocation == null)
@@ -172,6 +194,11 @@ class EventsListFragment : Fragment() {
             }
 
             val eventLocation = Location("Evnt Location")
+
+            if(location == null)
+            {
+                return null
+            }
             eventLocation.longitude = location.longitude
             eventLocation.latitude = location.latitude
 
@@ -234,6 +261,8 @@ class EventsListFragment : Fragment() {
 
         fun setUpButton(view: View, user: User, event: Event)
         {
+            view.findViewById<Button>(R.id.join_button).isEnabled = !(event.maxPlayers.toInt() == event.players.size)
+
             if(user.equals(event.host))
             {
                 view.findViewById<Button>(R.id.join_button).visibility = View.GONE
@@ -246,7 +275,12 @@ class EventsListFragment : Fragment() {
 
             if(event.players.contains(user))
             {
+                view.findViewById<Button>(R.id.join_button).isEnabled = true
                 view.findViewById<Button>(R.id.join_button).text = "Leave"
+            }
+            else if (event.maxPlayers.toInt() == event.players.size)
+            {
+                view.findViewById<Button>(R.id.join_button).text = "Full"
             }
             else
             {
@@ -262,10 +296,11 @@ class EventsListFragment : Fragment() {
 
             val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
-
+            setUpButton(holder.view, currentUser, events[position])
 
             setImage(holder.view, events[position].sport)
 
+            val databaseRef = FirebaseDatabase.getInstance().getReference("events")
 
             val dateFormat = SimpleDateFormat("hh:mm a yyyy-MM-dd")
 
@@ -274,14 +309,22 @@ class EventsListFragment : Fragment() {
             holder.view.findViewById<TextView>(R.id.location).text = events[position].location
             holder.view.findViewById<TextView>(R.id.host).text = "Host " + events[position].host.username
 
-            if (getDistance(events[position].location) < 1)
+
+
+            val distance = getDistance(events[position].location)
+
+            if (distance == null)
+            {
+                holder.view.findViewById<TextView>(R.id.distance).text = "Distance: Not Found"
+            }
+            else if (distance!! < 1)
             {
                 holder.view.findViewById<TextView>(R.id.distance).text = "Distance: < 1 mi"
 
             }
             else
             {
-                holder.view.findViewById<TextView>(R.id.distance).text = "Distance " + getDistance(events[position].location).toString() + " mi"
+                holder.view.findViewById<TextView>(R.id.distance).text = "Distance " + String.format("%.1f", getDistance(events[position].location)) + " mi"
 
             }
 
@@ -294,38 +337,20 @@ class EventsListFragment : Fragment() {
                 openFragment(EventsDisplayFragment())
             }
 
-            val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-            val databaseRef = FirebaseDatabase.getInstance().getReference("events")
-            val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
-
-            var user: User? = null
-
-            userRef.addValueEventListener(object: ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
-                    //Does nothing
-                }
-
-                override fun onDataChange(p0: DataSnapshot?) {
-
-                    user = p0?.getValue(User::class.java)
-                    setUpButton(holder.view, user!!, events[position])
-                }
-
-            })  // This gets the user object of the current User
             val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
 
             val menuListener = PopupMenu.OnMenuItemClickListener {
 
                 when(it.title)
                 {
-                    "Delete Event" -> {
+                    "Delete Game" -> {
 
                         databaseRef.child(events[position].event_id).removeValue()
                         return@OnMenuItemClickListener true
                     }
 
-                    "Edit Event" -> {
+                    "Edit Game" -> {
 
                         model.setvalue(events[position].date
                             , events[position].sport, events[position].location
@@ -335,6 +360,13 @@ class EventsListFragment : Fragment() {
 
                         openFragment(UpdateEventFragment())
                         return@OnMenuItemClickListener true
+                    }
+                    "View Game" -> {
+                        model.setvalue(events[position].date, events[position].sport, events[position].location, events[position].host.username, events[position].maxPlayers, getDistance(events[position].location).toString(), events[position].players)
+
+                        openFragment(EventsDisplayFragment())
+                        return@OnMenuItemClickListener true
+
                     }
 
                     else -> {
@@ -349,7 +381,7 @@ class EventsListFragment : Fragment() {
 
                 val inflater = popup.menuInflater
 
-                if (user!!.equals(events[position].host))
+                if (currentUser.equals(events[position].host))
                 {
                     inflater.inflate(R.menu.actions_creator, popup.menu)
                     popup.show()
@@ -364,15 +396,15 @@ class EventsListFragment : Fragment() {
 
             holder.view.findViewById<Button>(R.id.join_button).setOnClickListener {
 
-                if(!checkIfJoinned(user!!, events[position].players))
+                if(!checkIfJoinned(currentUser, events[position].players))
                 {
                     var newList = events[position].players
-                    newList.add(user!!)
+                    newList.add(currentUser)
                     joinEvent(events[position], newList)
                 }
                 else {
 
-                    leaveEvent(events[position], user!!)
+                    leaveEvent(events[position], currentUser)
                 }
             }
 

@@ -6,8 +6,8 @@
             android:orderInCategory="2"
             android:title="Share"/>
     <item
-            android:id="@+id/join_event"
-            android:orderInCategory="1"
-            android:title="Join Event"/>
+            android:id="@+id/view_event"
+            android:orderInCategory="2"
+            android:title="View Game"/>
 
 </menu>

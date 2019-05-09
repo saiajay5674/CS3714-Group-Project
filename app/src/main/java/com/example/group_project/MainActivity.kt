@@ -3,6 +3,7 @@ package com.example.group_project
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
@@ -15,6 +16,18 @@ MainActivity : AppCompatActivity(){
     //private lateinit var mMap: GoogleMap
     private var mBottomNav: BottomNavigationView? = null
 
+    private var eventsListFragment: EventsListFragment
+    private var mapFragment: MapFragment
+    private var profileFragment: ProfileFragment
+    private var currentFragment: Fragment? = null
+
+    init {
+
+        eventsListFragment = EventsListFragment()
+        mapFragment = MapFragment()
+        profileFragment = ProfileFragment()
+    }
+
     private var selectedNavigation: Int? = null
     private val listener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -25,7 +38,6 @@ MainActivity : AppCompatActivity(){
                 {
                     return@OnNavigationItemSelectedListener true
                 }
-                val mapFragment = MapFragment()
                 selectedNavigation = R.id.menu_new_event
                 openFragment(mapFragment)
                 return@OnNavigationItemSelectedListener true
@@ -35,9 +47,8 @@ MainActivity : AppCompatActivity(){
                 {
                     return@OnNavigationItemSelectedListener true
                 }
-                val eventsListfragment = EventsListFragment()
                 selectedNavigation = R.id.menu_events
-                openFragment(eventsListfragment)
+                openFragment(eventsListFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_profile -> {
@@ -45,7 +56,6 @@ MainActivity : AppCompatActivity(){
                 {
                     return@OnNavigationItemSelectedListener true
                 }
-                val profileFragment = ProfileFragment()
                 selectedNavigation = R.id.menu_profile
                 openFragment(profileFragment)
                 return@OnNavigationItemSelectedListener true
