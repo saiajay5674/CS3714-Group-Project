@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -72,6 +73,18 @@ class EventsDisplayFragment : Fragment() {
 
         })
 
+        model.getMaxPlayers().observe(this, Observer<String> { value ->
+
+            v.findViewById<TextView>(R.id.maxPlayersTxt).text = value
+
+        })
+
+
+        model.getPlayers().observe(this, Observer<ArrayList<User>> { value ->
+
+            adapter.setPlayers(value)
+
+        })
 
 
         return v
@@ -80,7 +93,14 @@ class EventsDisplayFragment : Fragment() {
 
     inner class DetailListAdapter(): RecyclerView.Adapter<DetailListAdapter.DetailUserViewHolder>() {
 
-        var events = emptyList<Event>()
+        var players = emptyList<User>()
+
+
+        internal fun setPlayers(players: List<User>)
+        {
+            this.players = players
+            notifyDataSetChanged()
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailUserViewHolder {
 
@@ -91,12 +111,12 @@ class EventsDisplayFragment : Fragment() {
 
         override fun getItemCount(): Int {
 
-            return events.size
+            return players.size
         }
 
         override fun onBindViewHolder(holder: DetailUserViewHolder, position: Int) {
 
-            holder.view.findViewById<TextView>(R.id.userNameTxt).text = events[position].players[position].username
+            holder.view.findViewById<TextView>(R.id.userNameTxt).text = players[position].username
 
         }
 

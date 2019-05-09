@@ -211,7 +211,7 @@ class EventsListFragment : Fragment() {
 
             holder.view.itemView.setOnClickListener {
 
-                model.setvalue(events[position].date, events[position].sport, events[position].location, events[position].host.username, getDistance(events[position].location).toString())
+                model.setvalue(events[position].date, events[position].sport, events[position].location, events[position].host.username, events[position].maxPlayers, getDistance(events[position].location).toString(), events[position].players)
 
 
                 openFragment(EventsDisplayFragment())
