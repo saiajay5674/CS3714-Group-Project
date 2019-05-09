@@ -2,10 +2,7 @@ package com.example.group_project
 
 
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -17,10 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
-import android.net.Uri
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import androidx.work.Constraints
 import androidx.work.NetworkType
@@ -32,6 +27,7 @@ import kotlinx.android.synthetic.main.card_view.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 class EventsListFragment : Fragment() {
@@ -183,11 +179,81 @@ class EventsListFragment : Fragment() {
 
         }
 
+        fun setImage(view: View, sport: String)
+        {
+            when(sport)
+            {
+                "Basketball" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.basketball)
+                }
+                "Tennis" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.tennis)
+                }
+                "Badminton" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.badminton)
+                }
+                "Volleyball" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.volleyball)
+                }
+                "Soccer" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.soccer)
+                }
+                "Football" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.football)
+                }
+                "Golf" -> {
+                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.golf)
+                }
+            }
+        }
+
+        fun joinEvent(event: Event, playerList: ArrayList<User>)
+        {
+            val ref = FirebaseDatabase.getInstance().getReference("events")
+
+            ref.child(event.event_id).child("players").setValue(playerList).addOnSuccessListener {
+
+                Toast.makeText(mainActivity, "You have joinned the event", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun leaveEvent(event: Event, user: User)
+        {
+            val ref = FirebaseDatabase.getInstance().getReference("events")
+
+            var newList = event.players
+
+            newList.remove(user)
+
+            ref.child(event.event_id).child("players").setValue(newList).addOnSuccessListener {
+
+                Toast.makeText(mainActivity, "You have been removed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun setUpButton(view: View, user: User, playerList: ArrayList<User>)
+        {
+            if(playerList.contains(user))
+            {
+                view.findViewById<Button>(R.id.join_button).text = "Leave"
+            }
+            else
+            {
+                view.findViewById<Button>(R.id.join_button).text = "Join"
+            }
+        }
+
+        fun checkIfJoinned(user: User, playerList: ArrayList<User>): Boolean
+        {
+            return playerList.contains(user)
+        }
         override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
 
             val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
 
+
+            setImage(holder.view, events[position].sport)
 
 
             val dateFormat = SimpleDateFormat("hh:mm a yyyy-MM-dd")
@@ -219,11 +285,12 @@ class EventsListFragment : Fragment() {
 
             val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-            val ref = FirebaseDatabase.getInstance().getReference("users/" + uid)
+            val databaseRef = FirebaseDatabase.getInstance().getReference("events")
+            val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
 
             var user: User? = null
 
-            ref.addValueEventListener(object: ValueEventListener {
+            userRef.addValueEventListener(object: ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
                     //Does nothing
                 }
@@ -231,15 +298,44 @@ class EventsListFragment : Fragment() {
                 override fun onDataChange(p0: DataSnapshot?) {
 
                     user = p0?.getValue(User::class.java)
-
+                    setUpButton(holder.view, user!!, events[position].players)
                 }
 
             })  // This gets the user object of the current User
             val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
 
+            val menuListener = PopupMenu.OnMenuItemClickListener {
+
+                when(it.title)
+                {
+                    "Delete Event" -> {
+
+                        databaseRef.child(events[position].event_id).removeValue()
+                        return@OnMenuItemClickListener true
+                    }
+
+                    "Edit Event" -> {
+
+                        model.setvalue(events[position].date
+                            , events[position].sport, events[position].location
+                            , events[position].host.username, events[position].maxPlayers
+                            , getDistance(events[position].location).toString()
+                            , events[position].players)
+
+                        openFragment(UpdateEventFragment())
+                        return@OnMenuItemClickListener true
+                    }
+
+                    else -> {
+                        return@OnMenuItemClickListener false
+                    }
+                }
+            }
+
+            popup.setOnMenuItemClickListener(menuListener)
+
             holder.view.findViewById<ImageButton>(R.id.options).setOnClickListener {
 
-                val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
                 val inflater = popup.menuInflater
 
                 if (user!!.equals(events[position].host))
@@ -255,13 +351,21 @@ class EventsListFragment : Fragment() {
 
             }
 
-            popup.setOnMenuItemClickListener {
+            holder.view.findViewById<Button>(R.id.join_button).setOnClickListener {
 
-                when(it.title)
+                if(!checkIfJoinned(user!!, events[position].players))
                 {
+                    var newList = events[position].players
+                    newList.add(user!!)
+                    joinEvent(events[position], newList)
+                }
+                else {
 
+                    leaveEvent(events[position], user!!)
                 }
             }
+
+
         }
 
 
