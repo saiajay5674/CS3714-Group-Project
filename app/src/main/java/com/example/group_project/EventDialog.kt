@@ -49,6 +49,8 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
     var minute: Int = 0
 
     private var playerCounterTxt: EditText? = null
+    private var addEventButton: Button? = null
+    private var cancelButton: Button? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,6 +69,10 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             val view = inflater.inflate(R.layout.popup, null)
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
+
+            addEventButton = view.findViewById(R.id.dialog_add_event)
+            cancelButton = view.findViewById(R.id.dialog_cancel)
+
             firebaseAuth = FirebaseAuth.getInstance()
             val userID = firebaseAuth.currentUser?.uid
 
@@ -103,6 +109,9 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
             })
 
+
+
+
             dateTextView?.setOnClickListener {
 
                 showDatePickerDialog()
@@ -129,56 +138,71 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             }
 
 
-            builder.setView(view)
-                // Add action buttons
-                .setMessage("Create a new Event")
-                .setPositiveButton("Add Event") { dialog, it ->
+            builder.setView(view).setCancelable(false).setMessage("Create a new Event")
+
+            val dialog = builder.create()
 
 
-                    var addEvent = true
+            addEventButton?.setOnClickListener {
 
-                    val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
+                var addEvent = true
 
-                    val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
-                    // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
+                val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
-                    val ref = FirebaseDatabase.getInstance().getReference("events")
-                    val host = user
-                    val eventId = ref.push().key
+                val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
+                // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
-                    var players = ArrayList<User>()
+                val ref = FirebaseDatabase.getInstance().getReference("events")
+                val host = user
+                val eventId = ref.push().key
 
-                    players.add(host!!)
+                var players = ArrayList<User>()
 
-                    val date = Date(year, month, day, hour, minute)
+                players.add(host!!)
 
-                    if (year == 0 || month == 0 || day == 0 || hour == 0 || minute == 0 || location.isEmpty()) {
-                        addEvent = false
-                        view?.findViewById<EditText>(R.id.add_event_location)?.setError("Please choose location")
+                val date = Date(year, month, day, hour, minute)
 
+                if (location.isEmpty()) {
+                    view?.findViewById<EditText>(R.id.add_event_location)?.setError("Please choose location")
 
+                    addEvent = false
 
-                       // builder?.create().getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                    }
-                    if (addEvent) {
-                        val event = Event(eventId, sport, date, location, playerCounter.toString(), host!!, players)
+                    // builder?.create().getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                }
 
-                        ref.child(eventId).setValue(event).addOnCompleteListener {
+                if (dateTextView.text.length == 0)
+                {
+                    dateTextView.setError("Invalid Date")
+                    addEvent = false
+                }
 
-                            Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
-                        }
+                if (timeTextView.text.length == 0)
+                {
+                    timeTextView.setError("Invalid Time")
+                    addEvent = false
+                }
+                if (addEvent) {
+                    val event = Event(eventId, sport, date, location, playerCounter.toString(), host!!, players)
+
+                    ref.child(eventId).setValue(event).addOnCompleteListener {
+
+                        Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
+                        dismiss()
                     }
                 }
-                .setNegativeButton("cancel") { dialog, id ->
-                    getDialog()?.cancel()
-                }
+            }
+
+
+            cancelButton?.setOnClickListener {
+
+                dismiss()
+            }
+
             builder.create()
 
 
-
-
-
         } ?: throw IllegalStateException("Activity cannot be null")
+
 
 
     }

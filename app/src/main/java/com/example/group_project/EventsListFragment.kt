@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
+import android.opengl.Visibility
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -231,9 +232,19 @@ class EventsListFragment : Fragment() {
             }
         }
 
-        fun setUpButton(view: View, user: User, playerList: ArrayList<User>)
+        fun setUpButton(view: View, user: User, event: Event)
         {
-            if(playerList.contains(user))
+            if(user.equals(event.host))
+            {
+                view.findViewById<Button>(R.id.join_button).visibility = View.GONE
+            }
+            else
+            {
+                view.findViewById<Button>(R.id.join_button).visibility = View.VISIBLE
+            }
+
+
+            if(event.players.contains(user))
             {
                 view.findViewById<Button>(R.id.join_button).text = "Leave"
             }
@@ -298,7 +309,7 @@ class EventsListFragment : Fragment() {
                 override fun onDataChange(p0: DataSnapshot?) {
 
                     user = p0?.getValue(User::class.java)
-                    setUpButton(holder.view, user!!, events[position].players)
+                    setUpButton(holder.view, user!!, events[position])
                 }
 
             })  // This gets the user object of the current User
