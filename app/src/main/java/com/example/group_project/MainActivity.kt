@@ -15,23 +15,38 @@ MainActivity : AppCompatActivity(){
     //private lateinit var mMap: GoogleMap
     private var mBottomNav: BottomNavigationView? = null
 
-
+    private var selectedNavigation: Int? = null
     private val listener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when(item.itemId) {
 
             R.id.menu_new_event -> {
+                if(selectedNavigation == R.id.menu_new_event)
+                {
+                    return@OnNavigationItemSelectedListener true
+                }
                 val mapFragment = MapFragment()
+                selectedNavigation = R.id.menu_new_event
                 openFragment(mapFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_events -> {
+                if(selectedNavigation == R.id.menu_events)
+                {
+                    return@OnNavigationItemSelectedListener true
+                }
                 val eventsListfragment = EventsListFragment()
+                selectedNavigation = R.id.menu_events
                 openFragment(eventsListfragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_profile -> {
+                if(selectedNavigation == R.id.menu_profile)
+                {
+                    return@OnNavigationItemSelectedListener true
+                }
                 val profileFragment = ProfileFragment()
+                selectedNavigation = R.id.menu_profile
                 openFragment(profileFragment)
                 return@OnNavigationItemSelectedListener true
             }
