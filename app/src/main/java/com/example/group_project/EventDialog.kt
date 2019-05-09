@@ -25,16 +25,17 @@ import android.widget.DatePicker
 import android.widget.TextView
 import android.util.Log
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private var placesAutocomplete : AutoCompleteTextView? = null
+    private var placesAutocomplete: AutoCompleteTextView? = null
     private lateinit var firebaseAuth: FirebaseAuth
 
-    lateinit var mainActivity:MainActivity
+    lateinit var mainActivity: MainActivity
 
     lateinit var dateTextView: TextView
     lateinit var timeTextView: TextView
@@ -47,7 +48,7 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
     var hour: Int = 0
     var minute: Int = 0
 
-    private var playerCounterTxt: TextView? = null
+    private var playerCounterTxt: EditText? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,8 +58,7 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
     private var playerCounter = 1
 
 
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{//, DatePickerDialog.OnDateSetListener {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {//, DatePickerDialog.OnDateSetListener {
         return activity?.let {
 
             val builder = AlertDialog.Builder(it)
@@ -90,7 +90,7 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
 
             var user: User? = null
 
-            ref.addValueEventListener(object: ValueEventListener {
+            ref.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError?) {
                     //Does nothing
                 }
@@ -114,7 +114,7 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
             }
 
 
-            view?.findViewById<Button>(R.id.plusBtn)?.setOnClickListener {
+            view?.findViewById<Button>(R.id.popBtn)?.setOnClickListener {
 
                 playerCounter++
                 playerCounterTxt!!.setText((playerCounter.toString()))
@@ -135,13 +135,12 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
                 .setPositiveButton("Add Event") { dialog, it ->
 
 
-                     //val time = view?.findViewById<EditText>(R.id.add_event_time)?.text.toString()
-
+                    var addEvent = true
 
                     val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
                     val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
-                   // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
+                    // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
                     val ref = FirebaseDatabase.getInstance().getReference("events")
                     val host = user
@@ -153,11 +152,21 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
 
                     val date = Date(year, month, day, hour, minute)
 
-                    val event = Event(eventId, sport, date, location, playerCounter.toString(), host!!, players )
+                    if (year == 0 || month == 0 || day == 0 || hour == 0 || minute == 0 || location.isEmpty()) {
+                        addEvent = false
+                        view?.findViewById<EditText>(R.id.add_event_location)?.setError("Please choose location")
 
-                    ref.child(eventId).setValue(event).addOnCompleteListener {
 
-                        Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
+
+                       // builder?.create().getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                    }
+                    if (addEvent) {
+                        val event = Event(eventId, sport, date, location, playerCounter.toString(), host!!, players)
+
+                        ref.child(eventId).setValue(event).addOnCompleteListener {
+
+                            Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
                 .setNegativeButton("cancel") { dialog, id ->
@@ -165,8 +174,11 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
                 }
             builder.create()
 
-        } ?: throw IllegalStateException("Activity cannot be null")
 
+
+
+
+        } ?: throw IllegalStateException("Activity cannot be null")
 
 
     }
@@ -186,7 +198,7 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
         this.hour = hour
         this.minute = minute
 
-        timeTextView.text = hour.toString() + ":" + minute.toString() +  "    "
+        timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
 
     }
 
@@ -197,19 +209,21 @@ class EventDialog: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePic
             this,
             Calendar.getInstance().get(Calendar.YEAR),
             Calendar.getInstance().get(Calendar.MONTH),
-            Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        )
 
         datePickerDialog.show()
     }
 
-    fun showTimePickerDialog(){
+    fun showTimePickerDialog() {
 
         val timePickerDialog = TimePickerDialog(
             context!!,
             this,
             Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
             Calendar.getInstance().get(Calendar.MINUTE),
-            false)
+            false
+        )
 
         timePickerDialog.show()
     }

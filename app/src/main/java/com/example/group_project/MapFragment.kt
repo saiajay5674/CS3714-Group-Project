@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.IOException
 
 
@@ -79,7 +80,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
         }
 
-        (view.findViewById(R.id.popBtn) as Button).setOnClickListener {
+        (view.findViewById(R.id.popBtn) as FloatingActionButton).setOnClickListener {
             val dialog = EventDialog()
 
             //dialog.setTargetFragment(this,1)
@@ -211,11 +212,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             mMap!!.isMyLocationEnabled = true
 
         }
-
-        //Enable zoom in and out control
-        mMap.uiSettings.isZoomControlsEnabled = true
-
-
     }
 
     private fun init()
