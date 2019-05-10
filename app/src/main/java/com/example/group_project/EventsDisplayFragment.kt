@@ -69,16 +69,21 @@ class EventsDisplayFragment : Fragment() {
 
                     if(p0 != null)
                     {
-                        event = p0?.getValue(Event::class.java)!!
-                        eventId = event.event_id
-                        v.findViewById<TextView>(R.id.ownerTxt).text = event.host.username
-                        v.findViewById<TextView>(R.id.sportTxt).text = event.sport
-                        v.findViewById<TextView>(R.id.timeTxt).text = event.date.toString()
-                        v.findViewById<TextView>(R.id.addressTxt).text = event.location
-                        v.findViewById<TextView>(R.id.maxPlayersTxt).text = event.maxPlayers
+                        if (p0!!.getValue(Event::class.java) != null)
+                        {
+                            event = p0?.getValue(Event::class.java)!!
+                            eventId = event.event_id
+                            v.findViewById<TextView>(R.id.ownerTxt).text = event.host.username
+                            v.findViewById<TextView>(R.id.sportTxt).text = event.sport
+                            v.findViewById<TextView>(R.id.timeTxt).text = event.date.toString()
+                            v.findViewById<TextView>(R.id.addressTxt).text = event.location
+                            v.findViewById<TextView>(R.id.maxPlayersTxt).text = event.maxPlayers
 
-                        updatePlayers(v, adapter)
-                        findUser(v)
+                            updatePlayers(v, adapter)
+                            currentUser = model.getCurrentUser().value!!
+                            setUpButton(v)
+                        }
+
                     }
 
                 }
@@ -152,28 +157,6 @@ class EventsDisplayFragment : Fragment() {
 
     }
 
-    fun findUser(view: View)
-    {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
-
-
-        userRef.addValueEventListener(object: ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                //Does nothing
-            }
-
-            override fun onDataChange(p0: DataSnapshot?) {
-
-                if (p0 != null)
-                {
-                    currentUser = p0?.getValue(User::class.java)!!
-                    setUpButton(view)
-                }
-            }
-
-        })  // This gets the user object of the current User
-    }
 
     fun setUpButton(view: View)
     {

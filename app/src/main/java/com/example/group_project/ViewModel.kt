@@ -12,6 +12,7 @@ class ViewModel: ViewModel() {
     private var distance = MutableLiveData<String>()
     private var event = MutableLiveData<Event>()
     private var event_id = MutableLiveData<String>()
+    private var currentUser = MutableLiveData<User>()
 
     fun setvalue(event_id: String, event: Event, distance: String){
 
@@ -19,6 +20,11 @@ class ViewModel: ViewModel() {
         this.distance.value = distance
         this.event.value = event
 
+    }
+
+    fun setCurrentUser(user: User)
+    {
+        this.currentUser.value = user
     }
 
     fun getEvent(): MutableLiveData<Event>
@@ -36,4 +42,8 @@ class ViewModel: ViewModel() {
         return distance
     }
 
+    fun getCurrentUser(): MutableLiveData<User>
+    {
+        return currentUser
+    }
 }

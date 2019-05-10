@@ -37,7 +37,7 @@ class EventsListFragment : Fragment() {
     lateinit var geocoder: Geocoder
     lateinit var locationManager: LocationManager
     lateinit var mainActivity: MainActivity
-    private var currentUser: User? = null
+    lateinit var currentUser: User
 
 
     override fun onAttach(context: Context) {
@@ -74,7 +74,8 @@ class EventsListFragment : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_events_list, container, false)
 
-        //val model = activity.run { ViewModelProviders.of(this!!).get(EventViewModel::class.java) }
+        val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
+
 
         recyclerView = view.findViewById(R.id.events_list)
         geocoder = Geocoder(context, Locale.getDefault())
@@ -106,23 +107,8 @@ class EventsListFragment : Fragment() {
 //        WorkManager.getInstance().enqueue(request)
 
 
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
-
-
-        userRef.addValueEventListener(object: ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                //Does nothing
-            }
-            override fun onDataChange(p0: DataSnapshot?) {
-
-                if (p0 != null)
-                {
-                    currentUser = p0?.getValue(User::class.java)!!
-                }
-            }
-        })  // This gets the user object of the current User
+        currentUser = model.getCurrentUser().value!!
 
         val ref = database.getReference("events")
 
@@ -300,30 +286,8 @@ class EventsListFragment : Fragment() {
 
             val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
-            if (currentUser == null)
-            {
-                val uid = FirebaseAuth.getInstance().currentUser?.uid
+            setUpButton(holder.view, currentUser!!, events[position])
 
-                val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
-
-
-                userRef.addValueEventListener(object: ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {
-                        //Does nothing
-                    }
-                    override fun onDataChange(p0: DataSnapshot?) {
-
-                        if (p0 != null)
-                        {
-                            currentUser = p0?.getValue(User::class.java)!!
-                            setUpButton(holder.view, currentUser!!, events[position])
-                        }
-                    }
-                })  // This gets the user object of the current User
-            }
-            else{
-                setUpButton(holder.view, currentUser!!, events[position])
-            }
 
             setImage(holder.view, events[position].sport)
 
@@ -405,7 +369,7 @@ class EventsListFragment : Fragment() {
 
             val inflater = popup.menuInflater
 
-            if (currentUser!!.equals(events[position].host))
+            if (currentUser.equals(events[position].host))
             {
                 inflater.inflate(R.menu.actions_creator, popup.menu)
             }
@@ -422,15 +386,15 @@ class EventsListFragment : Fragment() {
 
             holder.view.findViewById<Button>(R.id.join_button).setOnClickListener {
 
-                if(!checkIfJoinned(currentUser!!, events[position].players))
+                if(!checkIfJoinned(currentUser, events[position].players))
                 {
                     var newList = events[position].players
-                    newList.add(currentUser!!)
+                    newList.add(currentUser)
                     joinEvent(events[position], newList)
                 }
                 else {
 
-                    leaveEvent(events[position], currentUser!!)
+                    leaveEvent(events[position], currentUser)
                 }
             }
 
