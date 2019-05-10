@@ -4,6 +4,8 @@ package com.example.group_project
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +29,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
+import kotlinx.android.synthetic.main.fragment_events_display.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -38,6 +42,15 @@ class EventsListFragment : Fragment() {
     lateinit var locationManager: LocationManager
     lateinit var mainActivity: MainActivity
     lateinit var currentUser: User
+    lateinit var window: PopupWindow
+
+    lateinit var usernameSwitch: SwitchCompat
+    lateinit var distanceSwitch: SwitchCompat
+    lateinit var timeSwitch: SwitchCompat
+    lateinit var filterButton: Button
+    lateinit var filterCancelButton: Button
+    var sortByEnum: SORT = SORT.TIME
+
 
 
     override fun onAttach(context: Context) {
@@ -106,6 +119,24 @@ class EventsListFragment : Fragment() {
 //
 //        WorkManager.getInstance().enqueue(request)
 
+        window = PopupWindow(mainActivity)
+
+        val v = layoutInflater.inflate(R.layout.filter_popup, null)
+
+        window.contentView = v
+
+        window.isOutsideTouchable = true
+        window.isFocusable = true
+
+        distanceSwitch = v.findViewById(R.id.chipDistance)
+        timeSwitch = v.findViewById(R.id.chipTime)
+        usernameSwitch = v.findViewById(R.id.chipUserName)
+
+        timeSwitch.isChecked = true
+
+        filterButton = v.findViewById(R.id.filter_button)
+        filterCancelButton = v.findViewById(R.id.filter_cancel)
+
 
 
         currentUser = model.getCurrentUser().value!!
@@ -130,20 +161,90 @@ class EventsListFragment : Fragment() {
                     }
                 }
                 adapter.setEvents(events)
+                adapter.sortBy(sortByEnum)
             }
 
         })
 
+        distanceSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+
+            if(b)
+            {
+                timeSwitch.isChecked = false
+                usernameSwitch.isChecked = false
+            }
+        }
+
+        timeSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+
+            if(b)
+            {
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = false
+            }
+        }
+        usernameSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+
+            if(b)
+            {
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = false
+            }
+        }
+
+        filterCancelButton.setOnClickListener {
+
+            when(sortByEnum)
+            {
+
+                SORT.USERNAME -> {
+
+                    timeSwitch.isChecked = false
+                    distanceSwitch.isChecked = false
+                    usernameSwitch.isChecked = true
+                }
+
+                SORT.DISTANCE -> {
+
+                    timeSwitch.isChecked = false
+                    distanceSwitch.isChecked = true
+                    usernameSwitch.isChecked = false
+                }
+
+                SORT.TIME -> {
+
+                    timeSwitch.isChecked = true
+                    distanceSwitch.isChecked = false
+                    usernameSwitch.isChecked = false
+                }
+            }
+            window.dismiss()
+        }
+
+        filterButton.setOnClickListener {
+
+            if(timeSwitch.isChecked)
+            {
+                sortByEnum = SORT.TIME
+            }
+            if(distanceSwitch.isChecked)
+            {
+                sortByEnum = SORT.DISTANCE
+            }
+            if(usernameSwitch.isChecked)
+            {
+                sortByEnum = SORT.USERNAME
+            }
+
+            adapter.sortBy(sortByEnum)
+            window.dismiss()
+        }
+
         view.findViewById<Button>(R.id.filterBtn).setOnClickListener {
 
 
-            val window = PopupWindow(mainActivity)
 
-            val v = layoutInflater.inflate(R.layout.filter_popup, null)
-
-            window.contentView = v
-
-
+            //window.setBackgroundDrawable(ColorDrawable(Color.))
             window.showAsDropDown(view.findViewById(R.id.filterBtn))
 
             Toast.makeText(context,"Clicked", Toast.LENGTH_SHORT).show()
@@ -336,14 +437,12 @@ class EventsListFragment : Fragment() {
 
             }
 
-
             holder.view.itemView.setOnClickListener {
 
                 model.setvalue(events[position].event_id,events[position], getDistance(events[position].location).toString())
 
                 openFragment(EventsDisplayFragment())
             }
-
 
             val popup = PopupMenu(context,holder.view.findViewById(R.id.options))
 
@@ -418,8 +517,28 @@ class EventsListFragment : Fragment() {
 
         }
 
+        internal fun sortBy(sortBy: SORT)
+        {
+            when(sortBy)
+            {
+                SORT.USERNAME -> {
 
+                    events = events.sortedWith(compareBy { it.host.username })
 
+                }
+
+                SORT.DISTANCE -> {
+
+                    events = events.sortedWith(compareBy { getDistance(it.location) })
+                }
+
+                SORT.TIME -> {
+
+                    events = events.sortedWith(compareBy { it.date })
+                }
+            }
+            notifyDataSetChanged()
+        }
         internal fun setEvents(events: List<Event>)
         {
             this.events = events
