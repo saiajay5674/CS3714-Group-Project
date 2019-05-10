@@ -1,101 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   tools:context=".ProfileFragment">
-
-    <FrameLayout
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".ProfileFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    </FrameLayout>
-    <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/profile"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintBottom_toTopOf="@+id/username"/>
-
-    <TextView
-            android:text="user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/username"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout6"/>
-
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/username" android:id="@+id/linearLayout6"
-            android:layout_marginBottom="43dp" app:layout_constraintBottom_toTopOf="@+id/logout">
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/profile"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"
+                android:layout_marginTop="4dp"/>
+        <TextView
+                android:text="user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/username"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout6" android:layout_marginTop="4dp"/>
         <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:gravity="center" android:id="@+id/linearLayout">
-            <ImageView
-                    android:src="@mipmap/ic_mail"
-                    android:layout_width="77dp"
-                    android:layout_height="match_parent" android:id="@+id/mail" android:layout_weight="1"/>
-            <TextView
-                    android:text="email@gmail.com"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/username" android:id="@+id/linearLayout6"
+        >
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/email" android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="18dp"/>
-        </LinearLayout>
-        <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="?android:attr/listDivider"
-        />
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:gravity="center">
-            <ImageView
-                    android:src="@mipmap/ic_phone"
-                    android:layout_width="77dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/userPhone"
-                    android:layout_weight="1"/>
-            <TextView
-                    android:text="000 - 000 - 0000"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center" android:id="@+id/linearLayout">
+                <ImageView
+                        android:src="@mipmap/ic_mail"
+                        android:layout_width="77dp"
+                        android:layout_height="match_parent" android:id="@+id/mail" android:layout_weight="1"/>
+                <TextView
+                        android:text="email@gmail.com"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/email" android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="18dp"/>
+            </LinearLayout>
+            <View
+                    android:id="@+id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/phone"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="18dp"/>
+                    android:layout_height="4dp"
+                    android:background="?android:attr/listDivider"
+            />
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center">
+                <ImageView
+                        android:src="@mipmap/ic_phone"
+                        android:layout_width="77dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/userPhone"
+                        android:layout_weight="1"/>
+                <TextView
+                        android:text="000 - 000 - 0000"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/phone"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="18dp"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-    <Button
-            android:text="Logout"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:id="@+id/logout"
-            android:textSize="12dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6" app:layout_constraintHorizontal_bias="0.0"/>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+                android:text="Logout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:id="@+id/logout"
+                android:textSize="12dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="4dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

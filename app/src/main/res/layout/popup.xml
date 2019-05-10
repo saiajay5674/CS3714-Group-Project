@@ -32,7 +32,7 @@
                             android:layout_width="match_parent"
                             android:entries="@array/games"/>
                     <View
-                            android:id="@+id/divider"
+                            android:id="@+id/divider1"
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
                             android:background="?android:attr/listDivider"
@@ -90,7 +90,7 @@
                     <TextView
                             android:text="Choose Date"
                             android:layout_width="match_parent"
-                            android:layout_height="34dp" android:id="@+id/timeTitle" android:textStyle="bold"
+                            android:layout_height="34dp" android:id="@+id/distanceSeekTitle" android:textStyle="bold"
                             android:textSize="18dp"/>
 
                     <TextView
