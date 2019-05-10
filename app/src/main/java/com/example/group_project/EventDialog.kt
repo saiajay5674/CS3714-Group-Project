@@ -38,7 +38,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
     lateinit var dateTextView: TextView
     lateinit var timeTextView: TextView
 
-
     var year: Int = 0
     var month: Int = 0
     var day: Int = 0
@@ -145,6 +144,8 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
                 var addEvent = true
 
+                var validTime = true
+
                 val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
                 val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
@@ -161,8 +162,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
                 val calendar = Calendar.getInstance()
                 calendar.set(year, month, day, hour, minute, 0)
-
-                Log.d("Calendar----------------------------->", calendar.time.toString())
 
 
                 if (location.isEmpty()) {
@@ -185,13 +184,26 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                     addEvent = false
                 }
                 if (addEvent) {
-                    val event = Event(eventId, sport, calendar.time, location, playerCounter.toString(), host!!, players)
 
-                    ref.child(eventId).setValue(event).addOnCompleteListener {
+                    var minHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                    var minMinute = Calendar.getInstance().get(Calendar.MINUTE)
 
-                        Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
-                        dismiss()
+
+                    if ((day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) && (hour < minHour || (hour === minHour && minute < minMinute))) {
+
+                        timeTextView.setError("Invalid Time")
+
+                    } else {
+                        val event =
+                            Event(eventId, sport, calendar.time, location, playerCounter.toString(), host!!, players)
+
+                        ref.child(eventId).setValue(event).addOnCompleteListener {
+
+                            Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
+                            dismiss()
+                        }
                     }
+
                 }
             }
 
@@ -221,13 +233,30 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
     }
 
     override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
+        var validTime = true
 
-        this.hour = hour
-        this.minute = minute
+        var minHour =  Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        var minMinute = Calendar.getInstance().get(Calendar.MINUTE)
 
-        timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
+            this.hour = hour
+            this.minute = minute
+
+            timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
+
+
+
 
     }
+
+
+//    override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
+//
+//        this.hour = hour
+//        this.minute = minute
+//
+//        timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
+//
+//    }
 
     fun showDatePickerDialog() {
 
@@ -238,6 +267,10 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             Calendar.getInstance().get(Calendar.MONTH),
             Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         )
+
+        datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
+
+        Log.d("min date ++++++++++++",Calendar.getInstance().timeInMillis.toString() )
 
         datePickerDialog.show()
     }
