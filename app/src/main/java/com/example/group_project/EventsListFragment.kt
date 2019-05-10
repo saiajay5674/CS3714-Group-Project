@@ -331,8 +331,7 @@ class EventsListFragment : Fragment() {
 
             holder.view.itemView.setOnClickListener {
 
-                model.setvalue(events[position].date, events[position].sport, events[position].location, events[position].host.username, events[position].maxPlayers, getDistance(events[position].location).toString(), events[position].players)
-
+                model.setvalue(events[position].event_id,events[position], getDistance(events[position].location).toString())
 
                 openFragment(EventsDisplayFragment())
             }
@@ -346,23 +345,23 @@ class EventsListFragment : Fragment() {
                 {
                     "Delete Game" -> {
 
-                        databaseRef.child(events[position].event_id).removeValue()
+                        databaseRef.child(events[position].event_id).removeValue().addOnSuccessListener {
+
+                            Toast.makeText(mainActivity, "Game has been deleted", Toast.LENGTH_SHORT).show()
+                        }
                         return@OnMenuItemClickListener true
                     }
 
                     "Edit Game" -> {
 
-                        model.setvalue(events[position].date
-                            , events[position].sport, events[position].location
-                            , events[position].host.username, events[position].maxPlayers
-                            , getDistance(events[position].location).toString()
-                            , events[position].players)
+                        model.setvalue(events[position].event_id,events[position], getDistance(events[position].location).toString())
 
                         openFragment(UpdateEventFragment())
                         return@OnMenuItemClickListener true
                     }
                     "View Game" -> {
-                        model.setvalue(events[position].date, events[position].sport, events[position].location, events[position].host.username, events[position].maxPlayers, getDistance(events[position].location).toString(), events[position].players)
+
+                        model.setvalue(events[position].event_id,events[position], getDistance(events[position].location).toString())
 
                         openFragment(EventsDisplayFragment())
                         return@OnMenuItemClickListener true
@@ -377,20 +376,20 @@ class EventsListFragment : Fragment() {
 
             popup.setOnMenuItemClickListener(menuListener)
 
+            val inflater = popup.menuInflater
+
+            if (currentUser.equals(events[position].host))
+            {
+                inflater.inflate(R.menu.actions_creator, popup.menu)
+            }
+            else
+            {
+                inflater.inflate(R.menu.actions_public, popup.menu)
+            }
+
             holder.view.findViewById<ImageButton>(R.id.options).setOnClickListener {
 
-                val inflater = popup.menuInflater
-
-                if (currentUser.equals(events[position].host))
-                {
-                    inflater.inflate(R.menu.actions_creator, popup.menu)
-                    popup.show()
-                }
-                else
-                {
-                    inflater.inflate(R.menu.actions_public, popup.menu)
-                    popup.show()
-                }
+                popup.show()
 
             }
 

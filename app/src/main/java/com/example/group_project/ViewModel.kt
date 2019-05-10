@@ -8,57 +8,32 @@ import kotlin.collections.ArrayList
 
 class ViewModel: ViewModel() {
 
-    private var date = MutableLiveData<Date>()
-    private var sport = MutableLiveData<String>()
-    private var location = MutableLiveData<String>()
-    private var userName = MutableLiveData<String>()
+
     private var distance = MutableLiveData<String>()
-    private var players = MutableLiveData<ArrayList<User>>()
-    private var maxPlayers = MutableLiveData<String>()
+    private var event = MutableLiveData<Event>()
+    private var event_id = MutableLiveData<String>()
 
-    fun setvalue(date : Date, sport: String, location: String, userName: String, maxPlayers: String, distance : String, players: ArrayList<User>){
-        this.date.value = date
-        this.sport.value = sport
-        this.location.value = location
-        this.userName.value = userName
+    fun setvalue(event_id: String, event: Event, distance: String){
+
+        this.event_id.value = event_id
         this.distance.value = distance
-        this.players.value = players
-        this.maxPlayers.value = maxPlayers
+        this.event.value = event
 
     }
 
-    fun getCalendar(): MutableLiveData<Date>{
-
-        return date
+    fun getEvent(): MutableLiveData<Event>
+    {
+        return event
     }
 
-    fun getSport(): MutableLiveData<String>{
-
-        return sport
+    fun getEventId(): MutableLiveData<String>
+    {
+        return event_id
     }
 
-    fun getLocation(): MutableLiveData<String>{
-
-        return location
+    fun getDistance(): MutableLiveData<String>
+    {
+        return distance
     }
 
-    fun getUserName(): MutableLiveData<String>{
-
-        return userName
-    }
-
-    fun getDistance(): MutableLiveData<String>{
-
-        return  distance
-    }
-
-    fun getMaxPlayers(): MutableLiveData<String>{
-
-        return  maxPlayers
-    }
-
-    fun getPlayers(): MutableLiveData<ArrayList<User>>{
-
-        return  players
-    }
 }
