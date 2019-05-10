@@ -34,36 +34,32 @@ MainActivity : AppCompatActivity(){
         mapFragment = MapFragment()
         profileFragment = ProfileFragment()
     }
-
-    private var selectedNavigation: Int? = null
     private val listener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
+        val fragment = supportFragmentManager.findFragmentById(R.id.container)
         when(item.itemId) {
 
             R.id.menu_new_event -> {
-                if(selectedNavigation == R.id.menu_new_event)
+                if(mapFragment == fragment)
                 {
                     return@OnNavigationItemSelectedListener true
                 }
-                selectedNavigation = R.id.menu_new_event
                 openFragment(mapFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_events -> {
-                if(selectedNavigation == R.id.menu_events)
+                if(eventsListFragment == fragment)
                 {
                     return@OnNavigationItemSelectedListener true
                 }
-                selectedNavigation = R.id.menu_events
                 openFragment(eventsListFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.menu_profile -> {
-                if(selectedNavigation == R.id.menu_profile)
+                if(profileFragment == fragment)
                 {
                     return@OnNavigationItemSelectedListener true
                 }
-                selectedNavigation = R.id.menu_profile
                 openFragment(profileFragment)
                 return@OnNavigationItemSelectedListener true
             }
@@ -102,6 +98,10 @@ MainActivity : AppCompatActivity(){
                         model.setCurrentUser(currentUser)
                         mBottomNav?.setOnNavigationItemSelectedListener(listener)
                         progressDialog.dismiss()
+                        if (supportFragmentManager.findFragmentById(R.id.container) == null)
+                        {
+                            openFragment(eventsListFragment)
+                        }
                     }
                 }
             })  // This gets the user object of the current User
