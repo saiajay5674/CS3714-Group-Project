@@ -13,34 +13,27 @@
             android:src="@drawable/profile"
             app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"
-            android:layout_marginTop="96dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintBottom_toTopOf="@+id/username"/>
 
-    <Button
-            android:text="Logout"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:id="@+id/logout"
-            android:textSize="12dp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
             android:text="user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/username" android:layout_marginTop="8dp"
+            android:id="@+id/username"
             app:layout_constraintTop_toBottomOf="@+id/profile_image" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout6"/>
 
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="50dp"
-            app:layout_constraintTop_toBottomOf="@+id/username" android:id="@+id/linearLayout6">
+            app:layout_constraintTop_toBottomOf="@+id/username" android:id="@+id/linearLayout6"
+            app:layout_constraintBottom_toTopOf="@+id/logout">
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -88,6 +81,15 @@
                     android:textSize="18dp"/>
         </LinearLayout>
     </LinearLayout>
+    <Button
+            android:text="Logout"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:id="@+id/logout"
+            android:textSize="12dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
