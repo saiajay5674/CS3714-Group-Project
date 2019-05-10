@@ -77,7 +77,7 @@ class EventsDisplayFragment : Fragment() {
                         v.findViewById<TextView>(R.id.addressTxt).text = event.location
                         v.findViewById<TextView>(R.id.maxPlayersTxt).text = event.maxPlayers
 
-                        updatePlayers(adapter)
+                        updatePlayers(v, adapter)
                         findUser()
                     }
 
@@ -95,6 +95,7 @@ class EventsDisplayFragment : Fragment() {
 
 
         })
+
 
 
         joinButton.setOnClickListener {
@@ -116,7 +117,7 @@ class EventsDisplayFragment : Fragment() {
         return v
     }
 
-    fun updatePlayers(adapter: DetailListAdapter)
+    fun updatePlayers(view: View, adapter: DetailListAdapter)
     {
         val playerRef = FirebaseDatabase.getInstance().getReference("events/" + eventId + "/players")
 
@@ -138,6 +139,9 @@ class EventsDisplayFragment : Fragment() {
                     }
 
                 }
+
+                view.findViewById<TextView>(R.id.joinedPlayersTitle).text = "Joined Players: " + event.players.size.toString()
+
 
                 adapter.setPlayers(newPlayers)
 
@@ -175,7 +179,7 @@ class EventsDisplayFragment : Fragment() {
     {
         joinButton.isEnabled = !(event.maxPlayers.toInt() == event.players.size)
 
-        if(currentUser.equals(host))
+        if(currentUser.equals(event.host))
         {
             joinButton.visibility = View.GONE
         }
