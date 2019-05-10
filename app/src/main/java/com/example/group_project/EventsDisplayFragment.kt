@@ -200,7 +200,7 @@ class EventsDisplayFragment : Fragment() {
 
         ref.child(event.event_id).child("players").setValue(playerList).addOnSuccessListener {
 
-            Toast.makeText(mainActivity, "You have joinned the event", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mainActivity, "You have joined the event", Toast.LENGTH_SHORT).show()
         }
 
 
