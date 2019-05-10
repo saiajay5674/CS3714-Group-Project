@@ -203,7 +203,7 @@ class EventsListFragment : Fragment() {
             {
                 "Basketball" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://usatftw.files.wordpress.com/2019/02/ap-nuggets-rockets-basketball.jpg?w=1000&h=600&crop=1")
+                        .load("http://www.amisvegetarian.com/wp-content/uploads/2018/10/basketball-clipart-free-basketball-clipart-clipart-panda-free-clipart-images-history-clipart-1024x1024.png")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById<ImageView>(R.id.event_image))
                 }
                 "Tennis" -> {
