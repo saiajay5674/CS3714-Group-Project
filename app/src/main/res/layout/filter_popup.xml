@@ -75,9 +75,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="34dp" android:id="@+id/distanceSeekTitle" android:textStyle="bold"
                 android:textSize="14dp"/>
+        <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:layout_height="wrap_content" android:id="@+id/radius"/>
         <SeekBar
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/seekBar"/>
+                android:layout_height="wrap_content" android:id="@+id/radius_seekbar"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"

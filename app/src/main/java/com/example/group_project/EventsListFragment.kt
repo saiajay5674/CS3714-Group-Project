@@ -49,7 +49,10 @@ class EventsListFragment : Fragment() {
     lateinit var timeSwitch: SwitchCompat
     lateinit var filterButton: Button
     lateinit var filterCancelButton: Button
+    lateinit var radiusSeekBar: SeekBar
+    var radiusFilter: Int = 25
     var sortByEnum: SORT = SORT.TIME
+    var events = ArrayList<Event>()
 
 
 
@@ -136,6 +139,11 @@ class EventsListFragment : Fragment() {
 
         filterButton = v.findViewById(R.id.filter_button)
         filterCancelButton = v.findViewById(R.id.filter_cancel)
+        radiusSeekBar = v.findViewById(R.id.radius_seekbar)
+
+        radiusSeekBar.max = 106
+        radiusSeekBar.progress = 25
+        v.findViewById<TextView>(R.id.radius).text = "Radius: " + radiusSeekBar.progress.toString() + " mi"
 
 
 
@@ -150,7 +158,7 @@ class EventsListFragment : Fragment() {
 
             override fun onDataChange(p0: DataSnapshot?) {
 
-                val events = ArrayList<Event>()
+                events = ArrayList()
 
                 if (p0!!.exists())
                 {
@@ -160,7 +168,7 @@ class EventsListFragment : Fragment() {
                         events.add(event!!)
                     }
                 }
-                adapter.setEvents(events)
+                filterRadius(events, adapter)
                 adapter.sortBy(sortByEnum)
             }
 
@@ -191,6 +199,42 @@ class EventsListFragment : Fragment() {
                 distanceSwitch.isChecked = false
             }
         }
+        radiusSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
+
+                val newProgress = (Math.round(progress/5.0)*5).toInt()
+
+                seekBar?.progress = newProgress
+
+                if (newProgress == 105)
+                {
+                    v.findViewById<TextView>(R.id.radius).text = "Radius: Max mi"
+                }
+                else if (newProgress == 0)
+                {
+                    v.findViewById<TextView>(R.id.radius).text = "Radius: < 1 mi"
+                }
+                else
+                {
+                    v.findViewById<TextView>(R.id.radius).text = "Radius: " + radiusSeekBar.progress.toString() + " mi"
+                }
+
+
+
+
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                //Nothing
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                //Nothing
+            }
+
+        })
 
         filterCancelButton.setOnClickListener {
 
@@ -218,6 +262,8 @@ class EventsListFragment : Fragment() {
                     usernameSwitch.isChecked = false
                 }
             }
+
+            radiusSeekBar.progress = radiusFilter
             window.dismiss()
         }
 
@@ -236,22 +282,59 @@ class EventsListFragment : Fragment() {
                 sortByEnum = SORT.USERNAME
             }
 
+            radiusFilter = radiusSeekBar.progress
+            filterRadius(events, adapter)
             adapter.sortBy(sortByEnum)
             window.dismiss()
         }
 
         view.findViewById<Button>(R.id.filterBtn).setOnClickListener {
 
-
-
             //window.setBackgroundDrawable(ColorDrawable(Color.))
             window.showAsDropDown(view.findViewById(R.id.filterBtn))
-
-            Toast.makeText(context,"Clicked", Toast.LENGTH_SHORT).show()
 
         }
 
         return view
+    }
+
+    fun filterRadius(list: ArrayList<Event>, adapter: EventListAdapter)
+    {
+        val newList = ArrayList<Event>()
+
+        var radius: Int
+
+        if (radiusFilter == 105)
+        {
+            radius = Int.MAX_VALUE
+        }
+        else if (radiusFilter == 0)
+        {
+            radius = 1
+        }
+        else
+        {
+            radius = radiusFilter
+        }
+        for (event in list)
+        {
+
+            try {
+
+                val distance = adapter.getDistance(event.location)
+
+                if (distance!!.toInt() <= radius)
+                {
+                    newList.add(event)
+                }
+
+            } catch (e: java.lang.Exception)
+            {
+                newList.add(event)
+            }
+        }
+
+        adapter.setEvents(newList)
     }
 
     inner class EventListAdapter():
