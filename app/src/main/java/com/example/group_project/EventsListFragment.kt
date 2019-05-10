@@ -159,13 +159,18 @@ class EventsListFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot?) {
 
                 events = ArrayList()
+                val calendar = Calendar.getInstance().time
 
                 if (p0!!.exists())
                 {
                     for(event in p0.children)
                     {
                         val event = event.getValue(Event::class.java)
-                        events.add(event!!)
+
+                        if (event!!.date.compareTo(calendar) > 0)
+                        {
+                            events.add(event!!)
+                        }
                     }
                 }
                 filterRadius(events, adapter)
@@ -367,7 +372,7 @@ class EventsListFragment : Fragment() {
             //checkLocationPermission()
             if(currentLocation == null)
             {
-                return -1f
+                return null
             }
 
             val eventLocation = Location("Evnt Location")
