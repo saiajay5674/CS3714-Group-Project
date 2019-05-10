@@ -5,69 +5,79 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LoginActivity">
+        tools:context=".LoginActivity"
+        android:background="@drawable/blue_blurred_back">
 
     <LinearLayout
             android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="300dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:id="@+id/linearLayout4">
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/username"
-                android:hint="Email address"
-        />
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/password"
-                android:hint="Password"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_marginTop="36dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp">
-        <Button
-                android:text="LOGIN"
-                android:layout_width="match_parent"
-                android:layout_height="39dp"
-                android:id="@+id/login_button"
-                android:textSize="13sp" android:gravity="center_horizontal"/>
-        <View
-                android:id="@+id/divider11"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="?android:attr/listDivider"
-        />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
         <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
-            <TextView
-                    android:text="Not signed up ?"
-                    android:layout_width="wrap_content"
+                android:layout_marginTop="300dp"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:id="@+id/linearLayout4">
+            <EditText
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView"
-                    android:textSize="18sp"
-            />
-            <TextView
-                    android:text="      Sign Up"
-                    android:layout_width="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/username"
+                    android:hint="Email address"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"/>
+            <EditText
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/signup_text"
-                    android:textSize="18sp"
+                    android:inputType="textPassword"
+                    android:ems="10"
+                    android:id="@+id/password"
+                    android:hint="Password"
+                    android:textColor="#FFF"
+                    android:textColorHint="#FFF"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:layout_marginTop="36dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp">
+            <Button
+                    android:text="LOGIN"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:id="@+id/login_button"
+                    android:textSize="13sp" android:gravity="center_horizontal"/>
+            <View
+                    android:id="@+id/divider11"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"
             />
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+                <TextView
+                        android:text="Not signed up ?"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView"
+                        android:textSize="18sp"
+                />
+                <TextView
+                        android:text="      Sign Up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/signup_text"
+                        android:textSize="18sp"
+                />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

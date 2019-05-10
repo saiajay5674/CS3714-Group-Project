@@ -119,6 +119,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 var markerOptions = MarkerOptions()
                     .position(latLng)
                     .title("current Position")
+                  //  .icon(BitmapDescriptorFactory.fromAsset(R.drawable.ic_magnify.toString()))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
 
                 marker = mMap.addMarker((markerOptions))

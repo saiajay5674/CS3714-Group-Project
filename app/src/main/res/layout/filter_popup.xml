@@ -97,6 +97,12 @@
                 android:text="Cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/filter_cancel" android:layout_weight="1"/>
+        <View
+                android:id="@+id/divider6"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/listDivider"
+                android:layout_weight="1"/>
         <Button
                 android:text="Filter"
                 android:layout_width="wrap_content"
