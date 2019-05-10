@@ -22,14 +22,14 @@
                 <TextView
                         android:text="Game Host"
                         android:layout_width="match_parent"
-                        android:layout_height="34dp" android:id="@+id/timeTitle" android:textStyle="bold"
+                        android:layout_height="34dp" android:id="@+id/distanceSeekTitle" android:textStyle="bold"
                         android:textSize="14dp"/>
                 <TextView
                         android:text="name"
                         android:layout_width="match_parent"
                         android:layout_height="44dp" android:id="@+id/ownerTxt"/>
                 <View
-                        android:id="@+id/divider"
+                        android:id="@+id/divider1"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/listDivider"

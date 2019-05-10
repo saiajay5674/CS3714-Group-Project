@@ -133,6 +133,23 @@ class EventsListFragment : Fragment() {
             }
 
         })
+
+        view.findViewById<Button>(R.id.filterBtn).setOnClickListener {
+
+
+            val window = PopupWindow(mainActivity)
+
+            val v = layoutInflater.inflate(R.layout.filter_popup, null)
+
+            window.contentView = v
+
+
+            window.showAsDropDown(view.findViewById(R.id.filterBtn))
+
+            Toast.makeText(context,"Clicked", Toast.LENGTH_SHORT).show()
+
+        }
+
         return view
     }
 
