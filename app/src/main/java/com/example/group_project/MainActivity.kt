@@ -12,14 +12,11 @@ import com.google.firebase.database.FirebaseDatabase
 class
 MainActivity : AppCompatActivity(){
 
-    //private lateinit var fragment: Fragment
-    //private lateinit var mMap: GoogleMap
     private var mBottomNav: BottomNavigationView? = null
 
     private var eventsListFragment: EventsListFragment
     private var mapFragment: MapFragment
     private var profileFragment: ProfileFragment
-    private var currentFragment: Fragment? = null
 
     init {
 
@@ -71,12 +68,9 @@ MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
         mBottomNav = findViewById(R.id.bottom_navigation)
         mBottomNav?.setOnNavigationItemSelectedListener(listener)
 
-        openFragment(EventsListFragment())
-        mBottomNav?.selectedItemId = R.id.menu_events
     }
 
     private fun openFragment(fragment: Fragment) {
