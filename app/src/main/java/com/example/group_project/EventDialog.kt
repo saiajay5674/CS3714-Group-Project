@@ -284,7 +284,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             Calendar.getInstance().get(Calendar.MINUTE),
             false
         )
-
         timePickerDialog.show()
     }
 

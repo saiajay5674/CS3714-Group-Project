@@ -17,8 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class
-MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(){
 
     private var mBottomNav: BottomNavigationView? = null
 
@@ -113,6 +112,22 @@ MainActivity : AppCompatActivity(){
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mBottomNav = findViewById(R.id.bottom_navigation)
+
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        val fragment = supportFragmentManager.findFragmentById(R.id.container)
+
+        when(fragment)
+        {
+            eventsListFragment -> mBottomNav?.selectedItemId  = R.id.menu_events
+
+            mapFragment -> mBottomNav?.selectedItemId  = R.id.menu_new_event
+
+            profileFragment -> mBottomNav?.selectedItemId  = R.id.menu_profile
+        }
 
     }
 
