@@ -21,6 +21,8 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
@@ -35,7 +37,7 @@ class EventsListFragment : Fragment() {
     lateinit var geocoder: Geocoder
     lateinit var locationManager: LocationManager
     lateinit var mainActivity: MainActivity
-    lateinit var currentUser: User
+    private var currentUser: User? = null
 
 
     override fun onAttach(context: Context) {
@@ -106,7 +108,6 @@ class EventsListFragment : Fragment() {
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-
         val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
 
 
@@ -114,7 +115,6 @@ class EventsListFragment : Fragment() {
             override fun onCancelled(p0: DatabaseError?) {
                 //Does nothing
             }
-
             override fun onDataChange(p0: DataSnapshot?) {
 
                 if (p0 != null)
@@ -122,9 +122,7 @@ class EventsListFragment : Fragment() {
                     currentUser = p0?.getValue(User::class.java)!!
                 }
             }
-
         })  // This gets the user object of the current User
-
 
         val ref = database.getReference("events")
 
@@ -145,19 +143,11 @@ class EventsListFragment : Fragment() {
                         events.add(event!!)
                     }
                 }
-
                 adapter.setEvents(events)
-
-
             }
 
         })
         return view
-    }
-
-    fun updateUserLocation()
-    {
-
     }
 
     inner class EventListAdapter():
@@ -212,25 +202,39 @@ class EventsListFragment : Fragment() {
             when(sport)
             {
                 "Basketball" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.basketball)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://usatftw.files.wordpress.com/2019/02/ap-nuggets-rockets-basketball.jpg?w=1000&h=600&crop=1")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById<ImageView>(R.id.event_image))
                 }
                 "Tennis" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.tennis)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://cdn.wallpapersafari.com/69/74/5rjSna.jpg")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById<ImageView>(R.id.event_image))
                 }
                 "Badminton" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.badminton)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://images6.alphacoders.com/439/thumb-1920-439763.jpg")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Volleyball" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.volleyball)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://3er1viui9wo30pkxh1v2nh4w-wpengine.netdna-ssl.com/wp-content/uploads/prod/sites/93/2018/05/FIVB-vball-1024x683.png")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Soccer" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.soccer)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://wallpapercave.com/wp/qHXu91n.jpg")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Football" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.football)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiM_9WR24_iAhUNnOAKHdhDAiEQjRx6BAgBEAU&url=https%3A%2F%2Fatgbcentral.com%2Famerican-football-wallpaper.html&psig=AOvVaw0ctpfMtPnNJVwGhw70G-b7&ust=1557534718745555")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Golf" -> {
-                    view.findViewById<ImageView>(R.id.event_image).setImageResource(R.drawable.golf)
+                    Glide.with(this@EventsListFragment)
+                        .load("https://images.designtrends.com/wp-content/uploads/2016/02/28045208/feature93.jpg")
+                        .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
             }
         }
@@ -296,7 +300,30 @@ class EventsListFragment : Fragment() {
 
             val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
-            setUpButton(holder.view, currentUser, events[position])
+            if (currentUser == null)
+            {
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+                val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
+
+
+                userRef.addValueEventListener(object: ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {
+                        //Does nothing
+                    }
+                    override fun onDataChange(p0: DataSnapshot?) {
+
+                        if (p0 != null)
+                        {
+                            currentUser = p0?.getValue(User::class.java)!!
+                            setUpButton(holder.view, currentUser!!, events[position])
+                        }
+                    }
+                })  // This gets the user object of the current User
+            }
+            else{
+                setUpButton(holder.view, currentUser!!, events[position])
+            }
 
             setImage(holder.view, events[position].sport)
 
@@ -378,7 +405,7 @@ class EventsListFragment : Fragment() {
 
             val inflater = popup.menuInflater
 
-            if (currentUser.equals(events[position].host))
+            if (currentUser!!.equals(events[position].host))
             {
                 inflater.inflate(R.menu.actions_creator, popup.menu)
             }
@@ -395,15 +422,15 @@ class EventsListFragment : Fragment() {
 
             holder.view.findViewById<Button>(R.id.join_button).setOnClickListener {
 
-                if(!checkIfJoinned(currentUser, events[position].players))
+                if(!checkIfJoinned(currentUser!!, events[position].players))
                 {
                     var newList = events[position].players
-                    newList.add(currentUser)
+                    newList.add(currentUser!!)
                     joinEvent(events[position], newList)
                 }
                 else {
 
-                    leaveEvent(events[position], currentUser)
+                    leaveEvent(events[position], currentUser!!)
                 }
             }
 
