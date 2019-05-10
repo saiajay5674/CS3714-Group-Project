@@ -208,7 +208,7 @@ class EventsListFragment : Fragment() {
                 }
                 "Tennis" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://cdn.wallpapersafari.com/69/74/5rjSna.jpg")
+                        .load("http://clipart-library.com/images/8c686Xr9i.jpg")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById<ImageView>(R.id.event_image))
                 }
                 "Badminton" -> {
