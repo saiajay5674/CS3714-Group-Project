@@ -8,12 +8,12 @@
     <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:src="@drawable/profile"
             app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"/>
@@ -25,7 +25,7 @@
             android:id="@+id/logout"
             android:textSize="12dp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_marginBottom="4dp" app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
             android:text="user"
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginTop="50dp"
+            android:layout_marginStart="8dp" android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@+id/username" android:id="@+id/linearLayout6">
         <LinearLayout
                 android:orientation="horizontal"

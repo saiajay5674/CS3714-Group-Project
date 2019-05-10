@@ -78,7 +78,7 @@ class EventsDisplayFragment : Fragment() {
                         v.findViewById<TextView>(R.id.maxPlayersTxt).text = event.maxPlayers
 
                         updatePlayers(v, adapter)
-                        findUser()
+                        findUser(v)
                     }
 
                 }
@@ -111,7 +111,7 @@ class EventsDisplayFragment : Fragment() {
                 leaveEvent(event, currentUser)
             }
 
-            setUpButton()
+            setUpButton(v)
         }
 
         return v
@@ -152,7 +152,7 @@ class EventsDisplayFragment : Fragment() {
 
     }
 
-    fun findUser()
+    fun findUser(view: View)
     {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         val userRef = FirebaseDatabase.getInstance().getReference("users/" + uid)
@@ -168,14 +168,14 @@ class EventsDisplayFragment : Fragment() {
                 if (p0 != null)
                 {
                     currentUser = p0?.getValue(User::class.java)!!
-                    setUpButton()
+                    setUpButton(view)
                 }
             }
 
         })  // This gets the user object of the current User
     }
 
-    fun setUpButton()
+    fun setUpButton(view: View)
     {
         joinButton.isEnabled = !(event.maxPlayers.toInt() == event.players.size)
 
@@ -197,6 +197,8 @@ class EventsDisplayFragment : Fragment() {
         else if (event.maxPlayers.toInt() == event.players.size)
         {
             joinButton.text = "Full"
+
+            view.findViewById<TextView>(R.id.joinedPlayersTitle).text = "Joined Players: " + event.players.size.toString() + " (Full)"
         }
         else
         {
