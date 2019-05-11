@@ -147,18 +147,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             //dialog.setTargetFragment(this,1)
             dialog.show(childFragmentManager, "dialog")
         }
-//
-//        val spinner: Spinner? = (getView()?.findViewById(R.id.edit_event_sport) as? Spinner)
-//        // Create an ArrayAdapter using the string array and a default spinner layout
-//
-//        ArrayAdapter.createFromResource(context, R.array.games, android.R.layout.simple_spinner_item).also { adapter ->
-//
-//            // Specify the layout to use when the list of choices appears
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//
-//            // Apply the adapter to the spinner
-//            spinner?.adapter = adapter
-//        }
+
 
         view.findViewById<FloatingActionButton>(R.id.locationBtn).setOnClickListener {
 
@@ -329,23 +318,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
         val marker = MarkerOptions().position(latLng).title(title)
         mMap.addMarker(marker)
-        hideSoftKeyboard()
-    }
-
-    private fun hideSoftKeyboard()
-    {
-        this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
-    override fun onStop() {
-//        fusedLocationProviderClient?.removeLocationUpdates(locationCallback)
-        super.onStop()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
     }
 
 }
