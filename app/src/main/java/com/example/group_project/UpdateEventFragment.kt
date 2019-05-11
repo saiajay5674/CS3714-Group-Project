@@ -2,8 +2,10 @@ package com.example.group_project
 
 
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -162,6 +164,23 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
 
 
         return view
+    }
+
+    fun joinEvent(event: Event, playerList: ArrayList<User>)
+    {
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("Joining Game...")
+
+        val ref = FirebaseDatabase.getInstance().getReference("events")
+        progressDialog.show()
+        ref.child(event.event_id).child("players").setValue(playerList).addOnSuccessListener {
+
+            val handler = Handler()
+            handler.postDelayed( {
+                progressDialog.dismiss()
+            }, 1000)
+
+        }
     }
 
     private fun getIndex(spinner: Spinner, myString: String): Int {
