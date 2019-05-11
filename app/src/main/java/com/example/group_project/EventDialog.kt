@@ -9,6 +9,7 @@ import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
@@ -165,6 +166,18 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
                 val calendar = Calendar.getInstance()
                 calendar.set(year, month, day, hour, minute, 0)
+
+
+                if (sport.equals("Choose Sport"))
+                {
+                    addEvent = false
+
+                    val errorText = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedView as TextView
+                    errorText.setError("")
+                    errorText.setTextColor(Color.RED)
+                    errorText.setError("You must choose a sport")
+
+                }
 
 
                 if (location.isEmpty()) {
