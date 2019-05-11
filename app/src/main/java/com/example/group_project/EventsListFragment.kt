@@ -174,7 +174,18 @@ class EventsListFragment : Fragment() {
             filterRadius(events)
         }
 
-        v.findViewById<TextView>(R.id.radius).text = "Radius: " + radiusSeekBar.progress.toString() + " mi"
+        if (radiusFilter == 105)
+        {
+            v.findViewById<TextView>(R.id.radius).text = "Radius: Max mi"
+        }
+        else if (radiusFilter == 0)
+        {
+            v.findViewById<TextView>(R.id.radius).text = "Radius: < 1 mi"
+        }
+        else
+        {
+            v.findViewById<TextView>(R.id.radius).text = "Radius: " + radiusSeekBar.progress.toString() + " mi"
+        }
 
 
 

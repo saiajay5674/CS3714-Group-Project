@@ -143,6 +143,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
             addEventButton?.setOnClickListener {
 
+                addEventButton?.isEnabled = false
                 var addEvent = true
 
                 val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
@@ -202,6 +203,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                     if ((day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) && (hour < minHour || (hour === minHour && minute < minMinute))) {
 
                         timeTextView.setError("Invalid Time")
+                        addEventButton?.isEnabled = true
 
                     } else {
                         val event =
@@ -210,10 +212,14 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                         ref.child(eventId).setValue(event).addOnCompleteListener {
 
                             Toast.makeText(mainActivity, "Event created", Toast.LENGTH_LONG).show()
+                            addEventButton?.isEnabled = true
                             dismiss()
                         }
                     }
 
+                }
+                else {
+                    addEventButton?.isEnabled = true
                 }
             }
 
