@@ -82,7 +82,7 @@
                             android:ems="10"
                             android:id="@+id/add_event_time"
                             android:layout_width="match_parent"
-                            android:hint="time"/>
+                            android:hint="Touch to enter Time"/>
                     <View
                             android:id="@+id/divider4"
                             android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                             android:ems="10"
                             android:id="@+id/add_event_date"
                             android:layout_width="match_parent"
-                            android:hint="date"/>
+                            android:hint="Touch to enter Date"/>
                     <View
                             android:id="@+id/divider3"
                             android:layout_width="match_parent"
