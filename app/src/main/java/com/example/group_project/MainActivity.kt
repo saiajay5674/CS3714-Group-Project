@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(){
                     if (p0 != null)
                     {
                         currentUser = p0?.getValue(User::class.java)!!
-                        model.setCurrentUser(currentUser)
+                        model.intitializeApp(currentUser, SORT.TIME, 25)
                         mBottomNav?.setOnNavigationItemSelectedListener(listener)
                         progressDialog.dismiss()
                         if (supportFragmentManager.findFragmentById(R.id.container) == null)

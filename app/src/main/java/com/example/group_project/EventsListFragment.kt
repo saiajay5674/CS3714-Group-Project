@@ -2,6 +2,7 @@ package com.example.group_project
 
 
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
+import android.os.Handler
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -30,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
 import kotlinx.android.synthetic.main.fragment_events_display.*
+import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -135,14 +138,43 @@ class EventsListFragment : Fragment() {
         timeSwitch = v.findViewById(R.id.chipTime)
         usernameSwitch = v.findViewById(R.id.chipUserName)
 
-        timeSwitch.isChecked = true
+        when(model.getSortBy().value)
+        {
+            SORT.USERNAME -> {
+
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = true
+            }
+
+            SORT.DISTANCE -> {
+
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = true
+                usernameSwitch.isChecked = false
+            }
+
+            SORT.TIME -> {
+
+                timeSwitch.isChecked = true
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = false
+            }
+        }
 
         filterButton = v.findViewById(R.id.filter_button)
         filterCancelButton = v.findViewById(R.id.filter_cancel)
         radiusSeekBar = v.findViewById(R.id.radius_seekbar)
 
         radiusSeekBar.max = 106
-        radiusSeekBar.progress = 25
+        radiusSeekBar.progress = model.getRadiusFilter().value!!
+        radiusFilter = model.getRadiusFilter().value!!
+
+        if(events.size > 0)
+        {
+            filterRadius(events, adapter)
+        }
+
         v.findViewById<TextView>(R.id.radius).text = "Radius: " + radiusSeekBar.progress.toString() + " mi"
 
 
@@ -290,6 +322,7 @@ class EventsListFragment : Fragment() {
             radiusFilter = radiusSeekBar.progress
             filterRadius(events, adapter)
             adapter.sortBy(sortByEnum)
+            model.setFilter(sortByEnum, radiusFilter)
             window.dismiss()
         }
 
@@ -433,25 +466,42 @@ class EventsListFragment : Fragment() {
 
         fun joinEvent(event: Event, playerList: ArrayList<User>)
         {
-            val ref = FirebaseDatabase.getInstance().getReference("events")
+            val progressDialog = ProgressDialog(context)
+            progressDialog.setMessage("Joining Game...")
 
+            val ref = FirebaseDatabase.getInstance().getReference("events")
+            progressDialog.show()
             ref.child(event.event_id).child("players").setValue(playerList).addOnSuccessListener {
 
-                Toast.makeText(mainActivity, "You have joinned the event", Toast.LENGTH_SHORT).show()
+                val handler = Handler()
+                handler.postDelayed( {
+                    progressDialog.dismiss()
+                    Toast.makeText(mainActivity, "You have joinned the event", Toast.LENGTH_SHORT).show()
+                }, 1000)
+
             }
         }
 
         fun leaveEvent(event: Event, user: User)
         {
+            val progressDialog = ProgressDialog(context)
+            progressDialog.setMessage("Leaving Game...")
             val ref = FirebaseDatabase.getInstance().getReference("events")
 
             var newList = event.players
 
             newList.remove(user)
 
+            progressDialog.show()
+
             ref.child(event.event_id).child("players").setValue(newList).addOnSuccessListener {
 
-                Toast.makeText(mainActivity, "You have been removed", Toast.LENGTH_SHORT).show()
+                val handler = Handler()
+                handler.postDelayed( {
+                    progressDialog.dismiss()
+                    Toast.makeText(mainActivity, "You have been removed", Toast.LENGTH_SHORT).show()
+                }, 1000)
+
             }
         }
 
