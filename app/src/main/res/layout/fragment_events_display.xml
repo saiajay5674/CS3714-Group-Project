@@ -100,11 +100,32 @@
                         android:layout_height="34dp"
                         android:id="@+id/addressTitle" android:textStyle="bold"
                         android:textSize="14dp"/>
-                <TextView
-                        android:text="address"
+                <LinearLayout
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:id="@+id/addressTxt"/>
+                        android:layout_height="match_parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <TextView
+                                android:text="address"
+                                android:layout_width="0dp"
+                                android:layout_height="32dp"
+                                android:id="@+id/addressTxt" app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/pin" android:layout_marginEnd="4dp"/>
+                        <ImageButton
+                                android:src="@drawable/pin"
+                                android:layout_width="45dp"
+                                android:layout_height="45dp" android:id="@+id/pin"
+                                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" android:scaleType="fitCenter"
+                                android:backgroundTint="#FFF"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
                 <TextView
                         android:text="distance: 1 mile"
                         android:layout_width="match_parent"

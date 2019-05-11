@@ -16,6 +16,7 @@ import android.widget.*
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.FirebaseDatabase
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,7 +33,7 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
     private var editEventButton: Button? = null
     private var editCancelButton: Button? = null
 
-    private var playerCounterTxt: EditText? = null
+    private var playerCounterTxt: TextView? = null
 
     var year: Int = 0
     var month: Int = 0
@@ -102,12 +103,6 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
                 playerCounter--
                 playerCounterTxt!!.setText((playerCounter.toString()))
             }
-        }
-
-
-        playerCounterTxt?.addTextChangedListener {
-            playerCounter = it.toString().toInt()
-
         }
 
         dateTextView?.setOnClickListener {

@@ -47,7 +47,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
     var hour: Int = 0
     var minute: Int = 0
 
-    private var playerCounterTxt: EditText? = null
+    private var playerCounterTxt: TextView? = null
     private var addEventButton: Button? = null
     private var cancelButton: Button? = null
 
@@ -136,11 +136,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                 }
             }
 
-            playerCounterTxt?.addTextChangedListener {
-                playerCounter = it.toString().toInt()
-
-            }
-
             builder.setView(view).setCancelable(false)
 
             val dialog = builder.create()
@@ -153,7 +148,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                 val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
                 val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
-                // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
 
                 val ref = FirebaseDatabase.getInstance().getReference("events")
                 val host = user

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -129,7 +130,7 @@ class EventsDisplayFragment : Fragment() {
             setUpButton(v)
         }
 
-        v.findViewById<TextView>(R.id.addressTxt).setOnClickListener {
+        v.findViewById<ImageButton>(R.id.pin).setOnClickListener {
 
             model.setLocationChanged(true, event.location)
 
