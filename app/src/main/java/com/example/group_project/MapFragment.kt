@@ -119,9 +119,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
 
 
-
-       // geoLocate(locationName = location, getByName = true)
-
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
@@ -150,28 +147,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             //dialog.setTargetFragment(this,1)
             dialog.show(childFragmentManager, "dialog")
         }
-
-        val spinner: Spinner? = (getView()?.findViewById(R.id.edit_event_sport) as? Spinner)
-        // Create an ArrayAdapter using the string array and a default spinner layout
-
-        ArrayAdapter.createFromResource(context, R.array.games, android.R.layout.simple_spinner_item).also { adapter ->
-
-            // Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-            // Apply the adapter to the spinner
-            spinner?.adapter = adapter
-        }
+//
+//        val spinner: Spinner? = (getView()?.findViewById(R.id.edit_event_sport) as? Spinner)
+//        // Create an ArrayAdapter using the string array and a default spinner layout
+//
+//        ArrayAdapter.createFromResource(context, R.array.games, android.R.layout.simple_spinner_item).also { adapter ->
+//
+//            // Specify the layout to use when the list of choices appears
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//
+//            // Apply the adapter to the spinner
+//            spinner?.adapter = adapter
+//        }
 
         view.findViewById<FloatingActionButton>(R.id.locationBtn).setOnClickListener {
 
             latitude = currentLocation!!.latitude
             longitude = currentLocation!!.longitude
 
-
-            if (marker != null) {
-                marker!!.remove()
-            }
 
             geoLocate()
         }
@@ -192,7 +185,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
                 if (!model.checkLocationChnaged()){
 
-                  //  geoLocate(latitude = lastLocation.latitude, longitude = lastLocation.longitude, getByName = false)
+                    if (marker != null) {
+                        marker!!.remove()
+                    }
 
                 latitude = lastLocation.latitude
                 longitude = lastLocation.longitude
@@ -291,8 +286,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
         } else {
 
-            //TODO: move camera automatically when location is enabled
-            //no Effect???
             mMap!!.isMyLocationEnabled = true
 
         }
@@ -301,6 +294,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun geoLocate()
     {
+        if (marker != null) {
+            marker!!.remove()
+        }
+
 
         val geocoder = Geocoder(activity)
         var list = emptyList<Address>()
@@ -325,6 +322,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun moveCamera(latLng: LatLng, zoom: Float, title: String)
     {
+        if (marker != null) {
+            marker!!.remove()
+        }
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
         val marker = MarkerOptions().position(latLng).title(title)
         mMap.addMarker(marker)
