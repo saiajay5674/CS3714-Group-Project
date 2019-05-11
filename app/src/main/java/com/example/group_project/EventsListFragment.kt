@@ -503,6 +503,7 @@ class EventsListFragment : Fragment() {
         {
             val progressDialog = ProgressDialog(context)
             progressDialog.setMessage("Joining Game...")
+            progressDialog.setCanceledOnTouchOutside(false)
 
             val ref = FirebaseDatabase.getInstance().getReference("events")
             progressDialog.show()
@@ -521,6 +522,7 @@ class EventsListFragment : Fragment() {
         {
             val progressDialog = ProgressDialog(context)
             progressDialog.setMessage("Leaving Game...")
+            progressDialog.setCanceledOnTouchOutside(false)
             val ref = FirebaseDatabase.getInstance().getReference("events")
 
             var newList = event.players

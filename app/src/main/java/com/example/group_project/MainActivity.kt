@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity(){
         if (FirebaseAuth.getInstance().currentUser != null)
         {
             progressDialog.setMessage("Loading....")
+            progressDialog.setCanceledOnTouchOutside(false)
             progressDialog.show()
             val uid = FirebaseAuth.getInstance().currentUser?.uid
 
