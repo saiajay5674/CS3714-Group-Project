@@ -4,6 +4,7 @@ package com.example.group_project
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -42,6 +43,16 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
 
     private var playerCounter = 1
 
+    private lateinit var event: Event
+
+    lateinit var mainActivity: MainActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_update_event, container, false)
@@ -56,24 +67,28 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
         dateTextView = view.findViewById(R.id.edit_event_date)
         timeTextView = view.findViewById(R.id.edit_event_time)
 
-        view.findViewById<TextView>(R.id.edit_event_location).text = model.getEvent().value!!.location
+        event = model.getEvent().value!!
+
+        view.findViewById<TextView>(R.id.edit_event_location).text = event.location
 
         val dateFormatDate = SimpleDateFormat("MM-dd-yyyy")
         val dateFormatTime = SimpleDateFormat("hh:mm")
 
 
-        view.findViewById<TextView>(R.id.edit_event_date).text = dateFormatDate.format((model.getEvent().value!!.date))//dateFormat.format.getEvent().value!!.date
-        view.findViewById<TextView>(R.id.edit_event_time).text = dateFormatTime.format((model.getEvent().value!!.date))
+        view.findViewById<TextView>(R.id.edit_event_date).text = dateFormatDate.format((event.date))//dateFormat.format.getEvent().value!!.date
+        view.findViewById<TextView>(R.id.edit_event_time).text = dateFormatTime.format((event.date))
 
         val spinner =  view.findViewById<Spinner>(R.id.edit_event_sport)
 
-        spinner.setSelection(getIndex(spinner, model.getEvent().value!!.sport))
+        val event_id = event.event_id
+
+        spinner.setSelection(getIndex(spinner, event.sport))
 
         playerCounterTxt = view.findViewById(R.id.update_event_players_number)
 
-        playerCounter = model.getEvent().value!!.maxPlayers.toInt()
+        playerCounter = event.maxPlayers.toInt()
 
-        playerCounterTxt!!.setText(model.getEvent().value!!.maxPlayers)
+        playerCounterTxt!!.setText(event.maxPlayers)
 
         view?.findViewById<Button>(R.id.updatePlusBtn)?.setOnClickListener {
 
@@ -116,7 +131,6 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
             val location = view?.findViewById<EditText>(R.id.edit_event_location)?.text.toString()
 
 
-
             val calendar = Calendar.getInstance()
             calendar.set(year, month, day, hour, minute, 0)
 
@@ -139,6 +153,9 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
                 timeTextView.setError("Invalid Time")
                 addEvent = false
             }
+
+
+
             if (addEvent) {
 
                 var minHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -151,6 +168,16 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
 
                 } else {
 
+                    var newEvent: Event
+                    if(year == 0 || day == 0 || month == 0)
+                    {
+                        newEvent = Event(event_id, sport, this.event.date, location, playerCounter.toString() , event.host, event.players)
+                    }
+                    else
+                    {
+                        newEvent = Event(event_id, sport,calendar.time, location, playerCounter.toString() , event.host, event.players)
+                    }
+                    updateEvent(newEvent)
                 }
 
             }
@@ -166,18 +193,19 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
         return view
     }
 
-    fun joinEvent(event: Event, playerList: ArrayList<User>)
+    fun updateEvent(event: Event)
     {
         val progressDialog = ProgressDialog(context)
         progressDialog.setMessage("Joining Game...")
 
         val ref = FirebaseDatabase.getInstance().getReference("events")
         progressDialog.show()
-        ref.child(event.event_id).child("players").setValue(playerList).addOnSuccessListener {
+        ref.child(event.event_id).setValue(event).addOnSuccessListener {
 
             val handler = Handler()
             handler.postDelayed( {
                 progressDialog.dismiss()
+                openFragment(EventsDisplayFragment())
             }, 1000)
 
         }
@@ -238,6 +266,14 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
             false
         )
         timePickerDialog.show()
+    }
+
+    private fun openFragment(fragment: Fragment) {
+
+        val transaction = mainActivity.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commitAllowingStateLoss()
     }
 
 }

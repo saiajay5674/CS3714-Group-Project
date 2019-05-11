@@ -1,8 +1,10 @@
 package com.example.group_project
 
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -211,27 +213,42 @@ class EventsDisplayFragment : Fragment() {
 
     fun joinEvent(event: Event, playerList: ArrayList<User>)
     {
-        val ref = FirebaseDatabase.getInstance().getReference("events")
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("Joining Game...")
 
+        val ref = FirebaseDatabase.getInstance().getReference("events")
+        progressDialog.show()
         ref.child(event.event_id).child("players").setValue(playerList).addOnSuccessListener {
 
-            Toast.makeText(mainActivity, "You have joined the event", Toast.LENGTH_SHORT).show()
+            val handler = Handler()
+            handler.postDelayed( {
+                progressDialog.dismiss()
+                Toast.makeText(mainActivity, "You have joinned the event", Toast.LENGTH_SHORT).show()
+            }, 1000)
+
         }
-
-
     }
 
     fun leaveEvent(event: Event, user: User)
     {
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("Leaving Game...")
         val ref = FirebaseDatabase.getInstance().getReference("events")
 
         var newList = event.players
 
         newList.remove(user)
 
+        progressDialog.show()
+
         ref.child(event.event_id).child("players").setValue(newList).addOnSuccessListener {
 
-            Toast.makeText(mainActivity, "You have been removed", Toast.LENGTH_SHORT).show()
+            val handler = Handler()
+            handler.postDelayed( {
+                progressDialog.dismiss()
+                Toast.makeText(mainActivity, "You have been removed", Toast.LENGTH_SHORT).show()
+            }, 1000)
+
         }
     }
 

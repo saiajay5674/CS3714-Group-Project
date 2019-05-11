@@ -17,14 +17,6 @@
             app:showAsAction="ifRoom"/>
 
     <item
-            android:id="@+id/menu_friends"
-            android:enabled="true"
-            android:title="Friends"
-            android:icon="@drawable/ic_people_outline_black_24dp"
-            app:showAsAction="ifRoom"/>
-
-
-    <item
             android:id="@+id/menu_profile"
             android:enabled="true"
             android:title="Profile"
