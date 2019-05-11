@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -34,9 +36,15 @@ class EventsDisplayFragment : Fragment() {
     lateinit var eventId: String
     lateinit var mainActivity: MainActivity
 
+    private var mapFragment: MapFragment
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    init {
+        mapFragment = MapFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -117,6 +125,13 @@ class EventsDisplayFragment : Fragment() {
             }
 
             setUpButton(v)
+        }
+
+        v.findViewById<TextView>(R.id.addressTxt).setOnClickListener {
+
+            model.setLocationChanged(true, event.location)
+
+            openFragment(mapFragment)
         }
 
         return v
@@ -258,6 +273,14 @@ class EventsDisplayFragment : Fragment() {
                 }
             }
         }
+    }
+
+
+    private fun openFragment(fragment: Fragment) {
+        val transaction = mainActivity.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
 }

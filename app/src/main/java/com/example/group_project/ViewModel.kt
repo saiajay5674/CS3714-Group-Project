@@ -16,6 +16,9 @@ class ViewModel: ViewModel() {
     private var sortByEnum = MutableLiveData<SORT>()
     private var radiusFilter = MutableLiveData<Int>()
 
+    private var locationChanged: Boolean = false
+    private var location: String = ""
+
     fun setvalue(event_id: String, event: Event, distance: String){
 
         this.event_id.value = event_id
@@ -65,5 +68,18 @@ class ViewModel: ViewModel() {
     fun getCurrentUser(): MutableLiveData<User>
     {
         return currentUser
+    }
+
+    fun setLocationChanged(locationChanged: Boolean, location: String){
+        this.locationChanged = locationChanged
+        this.location = location
+    }
+
+    fun checkLocationChnaged():Boolean{
+        return locationChanged
+    }
+
+    fun getLocation():String{
+        return location
     }
 }

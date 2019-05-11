@@ -16,7 +16,9 @@
     <fragment android:id="@+id/profileFragment" android:name="com.example.group_project.ProfileFragment"
               android:label="fragment_profile" tools:layout="@layout/fragment_profile"/>
     <fragment android:id="@+id/eventsDisplayFragment" android:name="com.example.group_project.EventsDisplayFragment"
-              android:label="fragment_events_display" tools:layout="@layout/fragment_events_display"/>
+              android:label="fragment_events_display" tools:layout="@layout/fragment_events_display">
+        <action android:id="@+id/action_eventsDisplayFragment_to_mapFragment" app:destination="@id/mapFragment"/>
+    </fragment>
     <fragment android:id="@+id/updateEventFragment" android:name="com.example.group_project.UpdateEventFragment"
               android:label="fragment_update_event" tools:layout="@layout/fragment_update_event"/>
 </navigation>

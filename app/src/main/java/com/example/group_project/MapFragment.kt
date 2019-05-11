@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.IOException
+import java.util.*
 
 
 /**
@@ -36,16 +38,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var latitude = 0.toDouble()
     private var longitude = 0.toDouble()
 
+    private var location:String  = ""
+
     private lateinit var lastLocation: Location
     private var marker: Marker? = null
+
+    lateinit var geocoder: Geocoder
 
     //Location
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
     lateinit var locationCallback: LocationCallback
 
-
-    private lateinit var mSearchText: EditText
 
     companion object {
         private const val PERMISSION_CODE: Int = 1000
@@ -56,9 +60,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_map, container, false)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mSearchText =  view.findViewById(R.id.input_search)
+        geocoder = Geocoder(context, Locale.getDefault())
 
+        val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
+
+        location = model.getLocation()
+
+        var geoLocation = geocoder.getFromLocationName(location, 1)[0]
+
+        latitude = geoLocation.latitude
+        longitude = geoLocation.longitude
+
+
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
 
@@ -98,7 +113,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             // Apply the adapter to the spinner
             spinner?.adapter = adapter
         }
-        init()
         return view
     }
 
@@ -111,15 +125,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     marker!!.remove()
                 }
 
+                val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
+
+                if (!model.checkLocationChnaged()){
+
                 latitude = lastLocation.latitude
                 longitude = lastLocation.longitude
+                }
 
                 val latLng = LatLng(latitude, longitude)
 
                 var markerOptions = MarkerOptions()
                     .position(latLng)
                     .title("current Position")
-                  //  .icon(BitmapDescriptorFactory.fromAsset(R.drawable.ic_magnify.toString()))
+                    //  .icon(BitmapDescriptorFactory.fromAsset(R.drawable.ic_magnify.toString()))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
 
                 marker = mMap.addMarker((markerOptions))
@@ -215,31 +234,30 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun init()
+//    private fun init()
+//    {
+//        mSearchText.setOnEditorActionListener(object: TextView.OnEditorActionListener {
+//            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+//
+//                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event?.action == KeyEvent.ACTION_DOWN || event?.action == KeyEvent.KEYCODE_ENTER)
+//                {
+//                    //searching
+//                    geoLocate()
+//                }
+//
+//                return false
+//            }
+//
+//        })
+//    }
+
+    private fun geoLocate(latLng: LatLng)
     {
-        mSearchText.setOnEditorActionListener(object: TextView.OnEditorActionListener {
-            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-
-                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event?.action == KeyEvent.ACTION_DOWN || event?.action == KeyEvent.KEYCODE_ENTER)
-                {
-                    //searching
-                    geoLocate()
-                }
-
-                return false
-            }
-
-        })
-    }
-
-    private fun geoLocate()
-    {
-        val searchString = mSearchText.text.toString().trim()
         val geocoder = Geocoder(activity)
         var list = emptyList<Address>()
 
         try {
-            list = geocoder.getFromLocationName(searchString, 1)
+            list = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
         }
         catch (e: IOException)
         {
@@ -280,4 +298,5 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
     }
+
 }
