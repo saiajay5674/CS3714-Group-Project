@@ -2,10 +2,13 @@ package com.example.group_project
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -50,15 +53,52 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     lateinit var locationRequest: LocationRequest
     lateinit var locationCallback: LocationCallback
 
+    lateinit var locationManager: LocationManager
+    var currentLocation: Location? = null
+    lateinit var mainActivity: MainActivity
+
 
     companion object {
         private const val PERMISSION_CODE: Int = 1000
     }
 
+    val locationListener: LocationListener = object : LocationListener {
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
+        override fun onProviderEnabled(provider: String?) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onProviderDisabled(provider: String?) {
+            //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun onLocationChanged(location: Location) {
+
+        }
+
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
+
+    @SuppressLint("MissingPermission")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_map, container, false)
+
+
+        locationManager = mainActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1f, locationListener)
+
+        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
 
         geocoder = Geocoder(context, Locale.getDefault())
 
@@ -66,12 +106,21 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         location = model.getLocation()
 
-        var geoLocation = geocoder.getFromLocationName(location, 1)[0]
+        var geoLocation: Address
 
-        latitude = geoLocation.latitude
-        longitude = geoLocation.longitude
+        try {
+            geoLocation = geocoder.getFromLocationName(location, 1)[0]
+
+            latitude = geoLocation.latitude
+            longitude = geoLocation.longitude
+
+        }catch (e: IOException){
+
+        }
 
 
+
+       // geoLocate(locationName = location, getByName = true)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
@@ -113,6 +162,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             // Apply the adapter to the spinner
             spinner?.adapter = adapter
         }
+
+        view.findViewById<FloatingActionButton>(R.id.locationBtn).setOnClickListener {
+
+            latitude = currentLocation!!.latitude
+            longitude = currentLocation!!.longitude
+
+
+            if (marker != null) {
+                marker!!.remove()
+            }
+
+            geoLocate()
+        }
+
         return view
     }
 
@@ -129,15 +192,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
                 if (!model.checkLocationChnaged()){
 
+                  //  geoLocate(latitude = lastLocation.latitude, longitude = lastLocation.longitude, getByName = false)
+
                 latitude = lastLocation.latitude
                 longitude = lastLocation.longitude
-                }
+               }
 
                 val latLng = LatLng(latitude, longitude)
 
                 var markerOptions = MarkerOptions()
                     .position(latLng)
-                    .title("current Position")
                     //  .icon(BitmapDescriptorFactory.fromAsset(R.drawable.ic_magnify.toString()))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
 
@@ -234,30 +298,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-//    private fun init()
-//    {
-//        mSearchText.setOnEditorActionListener(object: TextView.OnEditorActionListener {
-//            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-//
-//                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event?.action == KeyEvent.ACTION_DOWN || event?.action == KeyEvent.KEYCODE_ENTER)
-//                {
-//                    //searching
-//                    geoLocate()
-//                }
-//
-//                return false
-//            }
-//
-//        })
-//    }
 
-    private fun geoLocate(latLng: LatLng)
+    private fun geoLocate()
     {
+
         val geocoder = Geocoder(activity)
         var list = emptyList<Address>()
 
         try {
-            list = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            list = geocoder.getFromLocation(latitude, longitude, 1)
         }
         catch (e: IOException)
         {
@@ -271,7 +320,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             moveCamera(LatLng(address.latitude, address.longitude), 15f, address.getAddressLine(0))
 
         }
-
 
     }
 
