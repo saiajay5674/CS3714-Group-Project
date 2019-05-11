@@ -1,7 +1,9 @@
 package com.example.group_project
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -31,6 +33,17 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+
+        if(!isNetworkAvailable())
+        {
+            val intent = Intent(this, NoInternetFragment::class.java)
+            finish()
+            overridePendingTransition(0, 0)
+            val bundle = Bundle()
+            bundle.putInt("open", 2)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
 
         progressDialog = ProgressDialog(this)
         signupButton = findViewById(R.id.signup_button)
@@ -148,6 +161,20 @@ class SignupActivity : AppCompatActivity(), View.OnClickListener {
                 overridePendingTransition(0, 0)
                 startActivity(Intent(this, LoginActivity::class.java))
             }
+        }
+    }
+
+    private fun isNetworkAvailable(): Boolean
+    {
+        try {
+
+            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+            return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
+        }
+        catch (e: java.lang.Exception)
+        {
+            return false
         }
     }
 
