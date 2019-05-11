@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +25,9 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
 
     lateinit var dateTextView: TextView
     lateinit var timeTextView: TextView
+
+    private var editEventButton: Button? = null
+    private var editCancelButton: Button? = null
 
     private var playerCounterTxt: EditText? = null
 
@@ -43,15 +48,20 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
         val model = activity?.run { ViewModelProviders.of(this).get(ViewModel::class.java) }
             ?: throw Exception("Invalid Activity")
 
+        editEventButton = view.findViewById(R.id.updateEditbtn)
+        editCancelButton = view.findViewById(R.id.updateCancelBtn)
+
+        dateTextView = view.findViewById(R.id.edit_event_date)
+        timeTextView = view.findViewById(R.id.edit_event_time)
 
         view.findViewById<TextView>(R.id.edit_event_location).text = model.getEvent().value!!.location
 
-        val dateFormat = SimpleDateFormat("hh:mm a yyyy-MM-dd")
+        val dateFormatDate = SimpleDateFormat("MM-dd-yyyy")
+        val dateFormatTime = SimpleDateFormat("hh:mm")
 
-       // holder.view.findViewById<TextView>(R.id.date).text = dateFormat.format(events[position].date)
 
-        //view.findViewById<TextView>(R.id.edit_event_date).text = dateFormat.model.getEvent().value!!.date
-        view.findViewById<TextView>(R.id.edit_event_time).text = model.getEvent().value!!.date.time.toString()
+        view.findViewById<TextView>(R.id.edit_event_date).text = dateFormatDate.format((model.getEvent().value!!.date))//dateFormat.format.getEvent().value!!.date
+        view.findViewById<TextView>(R.id.edit_event_time).text = dateFormatTime.format((model.getEvent().value!!.date))
 
         val spinner =  view.findViewById<Spinner>(R.id.edit_event_sport)
 
@@ -62,7 +72,6 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
         playerCounter = model.getEvent().value!!.maxPlayers.toInt()
 
         playerCounterTxt!!.setText(model.getEvent().value!!.maxPlayers)
-       // playerCounterTxt.setText(model.getEvent().value!!.maxPlayers) //= model.getEvent().value!!.maxPlayers as EditText
 
         view?.findViewById<Button>(R.id.updatePlusBtn)?.setOnClickListener {
 
@@ -78,6 +87,78 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
             }
         }
 
+
+        playerCounterTxt?.addTextChangedListener {
+            playerCounter = it.toString().toInt()
+
+        }
+
+        dateTextView?.setOnClickListener {
+
+            showDatePickerDialog()
+        }
+
+        timeTextView?.setOnClickListener {
+
+            showTimePickerDialog()
+        }
+
+
+        editEventButton?.setOnClickListener {
+
+            var addEvent = true
+
+
+            val sport = view?.findViewById<Spinner>(R.id.edit_event_sport)?.selectedItem.toString()
+
+            val location = view?.findViewById<EditText>(R.id.edit_event_location)?.text.toString()
+
+
+
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, day, hour, minute, 0)
+
+
+            if (location.isEmpty()) {
+                view?.findViewById<EditText>(R.id.edit_event_location)?.setError("Please choose location")
+
+                addEvent = false
+
+            }
+
+            if (dateTextView.text.length == 0)
+            {
+                dateTextView.setError("Invalid Date")
+                addEvent = false
+            }
+
+            if (timeTextView.text.length == 0)
+            {
+                timeTextView.setError("Invalid Time")
+                addEvent = false
+            }
+            if (addEvent) {
+
+                var minHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+                var minMinute = Calendar.getInstance().get(Calendar.MINUTE)
+
+
+                if ((day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) && (hour < minHour || (hour === minHour && minute < minMinute))) {
+
+                    timeTextView.setError("Invalid Time")
+
+                } else {
+
+                }
+
+            }
+        }
+
+
+        editCancelButton?.setOnClickListener {
+
+           // dismiss()
+        }
 
 
         return view
@@ -101,24 +182,16 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
         this.month = month
         this.day = day
 
-        dateTextView.text = month.toString() + "/" + day.toString() + "/" + year.toString()
+        dateTextView.text = month.toString() + "-" + day.toString() + "-" + year.toString()
 
     }
 
     override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
-        var validTime = true
-
-        var minHour =  Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        var minMinute = Calendar.getInstance().get(Calendar.MINUTE)
 
         this.hour = hour
         this.minute = minute
 
         timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
-
-
-
-
     }
 
     fun showDatePickerDialog() {
@@ -132,8 +205,6 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
         )
 
         datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
-
-        Log.d("min date ++++++++++++", Calendar.getInstance().timeInMillis.toString() )
 
         datePickerDialog.show()
     }

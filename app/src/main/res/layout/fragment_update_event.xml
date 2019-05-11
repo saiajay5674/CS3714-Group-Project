@@ -47,12 +47,13 @@
                             android:text="Choose Location"
                             android:layout_width="match_parent"
                             android:layout_height="34dp" android:id="@+id/locationTitle" android:textStyle="bold"
-                            android:textSize="18dp"
-                            android:imeOptions="actionDone"/>
+                            android:textSize="18dp"/>
                     <AutoCompleteTextView
                             android:id="@+id/edit_event_location"
                             android:layout_width="match_parent"
                             android:hint="Event location"
+                            android:imeOptions="actionDone"
+                            android:singleLine="true"
                             android:layout_height="wrap_content"
                     />
                 </LinearLayout>

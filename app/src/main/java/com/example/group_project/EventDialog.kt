@@ -110,8 +110,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             })
 
 
-
-
             dateTextView?.setOnClickListener {
 
                 showDatePickerDialog()
@@ -137,6 +135,10 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
                 }
             }
 
+            playerCounterTxt?.addTextChangedListener {
+                playerCounter = it.toString().toInt()
+
+            }
 
             builder.setView(view).setCancelable(false)
 
@@ -146,8 +148,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             addEventButton?.setOnClickListener {
 
                 var addEvent = true
-
-                var validTime = true
 
                 val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
@@ -231,35 +231,18 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
         this.month = month
         this.day = day
 
-        dateTextView.text = month.toString() + "/" + day.toString() + "/" + year.toString()
+        dateTextView.text = month.toString() + "-" + day.toString() + "-" + year.toString()
 
     }
 
     override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
-        var validTime = true
-
-        var minHour =  Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        var minMinute = Calendar.getInstance().get(Calendar.MINUTE)
 
             this.hour = hour
             this.minute = minute
 
             timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
-
-
-
-
     }
 
-
-//    override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
-//
-//        this.hour = hour
-//        this.minute = minute
-//
-//        timeTextView.text = hour.toString() + ":" + minute.toString() + "    "
-//
-//    }
 
     fun showDatePickerDialog() {
 
@@ -272,8 +255,6 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
         )
 
         datePickerDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
-
-        Log.d("min date ++++++++++++",Calendar.getInstance().timeInMillis.toString() )
 
         datePickerDialog.show()
     }
