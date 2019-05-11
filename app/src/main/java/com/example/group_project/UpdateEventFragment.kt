@@ -1,6 +1,9 @@
 package com.example.group_project
 
 
+import `in`.madapps.placesautocomplete.PlaceAPI
+import `in`.madapps.placesautocomplete.adapter.PlacesAutoCompleteAdapter
+import `in`.madapps.placesautocomplete.model.Place
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.app.TimePickerDialog
@@ -27,6 +30,7 @@ import java.util.*
  */
 class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    private var placesAutocomplete: AutoCompleteTextView? = null
     lateinit var dateTextView: TextView
     lateinit var timeTextView: TextView
 
@@ -85,9 +89,20 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
 
         spinner.setSelection(getIndex(spinner, event.sport))
 
+        val placesApi = PlaceAPI.Builder().apiKey("AIzaSyAeMzjhWrb6ZCLmhkqzelmY6LD63e2_VPY").build(mainActivity)
+
         playerCounterTxt = view.findViewById(R.id.update_event_players_number)
 
         playerCounter = event.maxPlayers.toInt()
+
+        placesAutocomplete = view?.findViewById(R.id.edit_event_location)
+        placesAutocomplete?.setAdapter(PlacesAutoCompleteAdapter(activity!!.applicationContext, placesApi))
+
+        placesAutocomplete?.onItemClickListener =
+            AdapterView.OnItemClickListener { parent, _, position, _ ->
+                val place = parent.getItemAtPosition(position) as Place
+                placesAutocomplete?.setText(place.description)
+            }
 
         playerCounterTxt!!.setText(event.maxPlayers)
 
