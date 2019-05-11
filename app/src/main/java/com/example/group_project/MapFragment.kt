@@ -166,14 +166,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             override fun onLocationResult(p0: LocationResult?) {
                 lastLocation = p0!!.locations.get(p0!!.locations.size - 1) // get last location
 
-                if (marker != null) {
-                    marker!!.remove()
-                }
 
                 val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
                 if (!model.checkLocationChnaged()){
-
                     if (marker != null) {
                         marker!!.remove()
                     }
@@ -319,5 +315,4 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val marker = MarkerOptions().position(latLng).title(title)
         mMap.addMarker(marker)
     }
-
 }
