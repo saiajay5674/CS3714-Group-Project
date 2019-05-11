@@ -323,9 +323,8 @@ class EventsListFragment : Fragment() {
             window.dismiss()
         }
 
-        view.findViewById<Button>(R.id.filterBtn).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.filterBtn).setOnClickListener {
 
-            //window.setBackgroundDrawable(ColorDrawable(Color.))
             window.showAsDropDown(view.findViewById(R.id.filterBtn))
 
         }
@@ -473,27 +472,27 @@ class EventsListFragment : Fragment() {
                 }
                 "Badminton" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://images6.alphacoders.com/439/thumb-1920-439763.jpg")
+                        .load("https://media.istockphoto.com/vectors/shuttlecock-for-badminton-from-bird-feathers-vector-id519780012?k=6&m=519780012&s=612x612&w=0&h=Zp-pwanjZTM9vUksfiuE1laChfRrg6rhUn_7_gSL3zY=")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Volleyball" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://3er1viui9wo30pkxh1v2nh4w-wpengine.netdna-ssl.com/wp-content/uploads/prod/sites/93/2018/05/FIVB-vball-1024x683.png")
+                        .load("https://clipartion.com/wp-content/uploads/2015/10/volleyball-ball-clipart-free-clip-art-images.jpg")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Soccer" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://wallpapercave.com/wp/qHXu91n.jpg")
+                        .load("https://i.pinimg.com/originals/e7/d7/19/e7d7190f0b5b3abd4f6c17e2c7989ec3.jpg")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Football" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiM_9WR24_iAhUNnOAKHdhDAiEQjRx6BAgBEAU&url=https%3A%2F%2Fatgbcentral.com%2Famerican-football-wallpaper.html&psig=AOvVaw0ctpfMtPnNJVwGhw70G-b7&ust=1557534718745555")
+                        .load("https://images.gutefrage.net/media/fragen/bilder/wie-nennt-man-die-weisse-schnur-an-einem-football/0_original.jpg?v=1449783687000")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
                 "Golf" -> {
                     Glide.with(this@EventsListFragment)
-                        .load("https://images.designtrends.com/wp-content/uploads/2016/02/28045208/feature93.jpg")
+                        .load("http://designatprinting.com/wp-content/uploads/golf-ball-clipart-no-background-clipartxtras-1800-16.jpeg")
                         .apply(RequestOptions().override(128, 128)).into(view.findViewById(R.id.event_image))
                 }
             }
