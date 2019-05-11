@@ -128,7 +128,7 @@
                         <Button
                                 android:text="-"
                                 android:layout_width="40dp"
-                                android:layout_height="40dp" android:id="@+id/minusBtn" android:layout_weight="1"
+                                android:layout_height="40dp" android:id="@+id/updateMinusBtn" android:layout_weight="1"
                         />
                         <EditText
                                 android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                         <Button
                                 android:text="+"
                                 android:layout_width="40dp"
-                                android:layout_height="40dp" android:id="@+id/popBtn"
+                                android:layout_height="40dp" android:id="@+id/updatePlusBtn"
                         />
                     </LinearLayout>
 
@@ -156,7 +156,7 @@
                         android:layout_height="match_parent">
                     <Button
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:id="@+id/editCancelBtn" android:layout_weight="1"
+                            android:layout_height="wrap_content" android:id="@+id/updateCancelBtn" android:layout_weight="1"
                             android:text="Cancel"/>
                     <View
                             android:id="@+id/divider7"
@@ -167,7 +167,7 @@
                     <Button
                             android:text="Edit"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:id="@+id/editEditbtn" android:layout_weight="1"/>
+                            android:layout_height="wrap_content" android:id="@+id/updateEditbtn" android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

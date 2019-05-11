@@ -80,7 +80,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
         }
 
-        (view.findViewById(R.id.popBtn) as FloatingActionButton).setOnClickListener {
+        (view.findViewById(R.id.plusBtn) as FloatingActionButton).setOnClickListener {
             val dialog = EventDialog()
 
             //dialog.setTargetFragment(this,1)

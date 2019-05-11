@@ -76,10 +76,10 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             firebaseAuth = FirebaseAuth.getInstance()
             val userID = firebaseAuth.currentUser?.uid
 
-            dateTextView = view.findViewById(R.id.edit_event_date)
-            timeTextView = view.findViewById(R.id.edit_event_time)
+            dateTextView = view.findViewById(R.id.add_event_date)
+            timeTextView = view.findViewById(R.id.add_event_time)
 
-            playerCounterTxt = view.findViewById(R.id.update_event_players_number)
+            playerCounterTxt = view.findViewById(R.id.playerCounterTxt)
 
             val placesApi = PlaceAPI.Builder().apiKey("AIzaSyAeMzjhWrb6ZCLmhkqzelmY6LD63e2_VPY").build(mainActivity)
 
@@ -123,7 +123,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             }
 
 
-            view?.findViewById<Button>(R.id.popBtn)?.setOnClickListener {
+            view?.findViewById<Button>(R.id.plusBtn)?.setOnClickListener {
 
                 playerCounter++
                 playerCounterTxt!!.setText((playerCounter.toString()))
@@ -149,7 +149,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
 
                 var validTime = true
 
-                val sport = view?.findViewById<Spinner>(R.id.edit_event_sport)?.selectedItem.toString()
+                val sport = view?.findViewById<Spinner>(R.id.add_event_sport)?.selectedItem.toString()
 
                 val location = view?.findViewById<EditText>(R.id.add_event_location)?.text.toString()
                 // val players = view?.findViewById<EditText>(R.id.add_event_players_number)?.text.toString()
