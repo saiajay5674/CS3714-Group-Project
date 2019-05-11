@@ -4,6 +4,7 @@ package com.example.group_project
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.location.*
+import android.net.ConnectivityManager
 import android.os.Handler
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
@@ -33,6 +35,9 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.card_view.view.*
 import kotlinx.android.synthetic.main.fragment_events_display.*
 import kotlinx.coroutines.delay
+import java.net.HttpURLConnection
+import java.net.InetAddress
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,6 +46,7 @@ import kotlin.collections.ArrayList
 class EventsListFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var database: FirebaseDatabase
+    lateinit var adapter: EventListAdapter
     lateinit var geocoder: Geocoder
     lateinit var locationManager: LocationManager
     lateinit var mainActivity: MainActivity
@@ -97,11 +103,20 @@ class EventsListFragment : Fragment() {
         val model = activity?.run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
 
 
+        if(!isNetworkAvailable())
+        {
+            val intent = Intent(mainActivity, NoInternetFragment::class.java)
+            val bundle = Bundle()
+            bundle.putInt("open", 2)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
+
         recyclerView = view.findViewById(R.id.events_list)
         geocoder = Geocoder(context, Locale.getDefault())
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.events_list)
-        val adapter = EventListAdapter()
+        adapter = EventListAdapter()
         database = FirebaseDatabase.getInstance()
 
         locationManager = mainActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -153,9 +168,10 @@ class EventsListFragment : Fragment() {
         radiusSeekBar.progress = model.getRadiusFilter().value!!
         radiusFilter = model.getRadiusFilter().value!!
 
+
         if(events.size > 0)
         {
-            filterRadius(events, adapter)
+            filterRadius(events)
         }
 
         v.findViewById<TextView>(R.id.radius).text = "Radius: " + radiusSeekBar.progress.toString() + " mi"
@@ -188,7 +204,7 @@ class EventsListFragment : Fragment() {
                         }
                     }
                 }
-                filterRadius(events, adapter)
+                filterRadius(events)
                 adapter.sortBy(sortByEnum)
             }
 
@@ -301,7 +317,7 @@ class EventsListFragment : Fragment() {
             }
 
             radiusFilter = radiusSeekBar.progress
-            filterRadius(events, adapter)
+            filterRadius(events)
             adapter.sortBy(sortByEnum)
             model.setFilter(sortByEnum, radiusFilter)
             window.dismiss()
@@ -355,7 +371,7 @@ class EventsListFragment : Fragment() {
         }
     }
 
-    fun filterRadius(list: ArrayList<Event>, adapter: EventListAdapter)
+    fun filterRadius(list: ArrayList<Event>)
     {
         val newList = ArrayList<Event>()
 
@@ -760,6 +776,20 @@ class EventsListFragment : Fragment() {
         }
     }
 
+
+    private fun isNetworkAvailable(): Boolean
+    {
+        try {
+
+            val cm = mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+            return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
+        }
+        catch (e: java.lang.Exception)
+        {
+            return false
+        }
+    }
 
 
 }

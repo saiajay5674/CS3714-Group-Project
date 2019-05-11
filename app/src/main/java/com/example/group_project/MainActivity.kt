@@ -3,6 +3,7 @@ package com.example.group_project
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -34,6 +35,8 @@ class MainActivity : AppCompatActivity(){
         profileFragment = ProfileFragment()
     }
     private val listener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
+
 
         val fragment = supportFragmentManager.findFragmentById(R.id.container)
         when(item.itemId) {
@@ -73,6 +76,16 @@ class MainActivity : AppCompatActivity(){
         setContentView(R.layout.activity_main)
 
         val model = run{ ViewModelProviders.of(this).get(ViewModel::class.java)}?: throw Exception("Invalid Activity")
+
+        if(!isNetworkAvailable())
+        {
+            val intent = Intent(this, NoInternetFragment::class.java)
+            overridePendingTransition(0, 0)
+            val bundle = Bundle()
+            bundle.putInt("open", 2)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
 
         progressDialog = ProgressDialog(this)
 
@@ -132,12 +145,31 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun openFragment(fragment: Fragment) {
+
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)
-        transaction.commit()
+        transaction.commitAllowingStateLoss()
     }
 
+    private fun isNetworkAvailable(): Boolean
+    {
+        try {
+
+            val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+            return cm.activeNetworkInfo != null && cm.activeNetworkInfo.isConnected
+        }
+        catch (e: java.lang.Exception)
+        {
+            return false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        progressDialog.dismiss()
+    }
 
 
 
