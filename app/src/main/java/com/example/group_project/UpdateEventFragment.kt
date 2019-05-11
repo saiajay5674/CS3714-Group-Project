@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.ViewModelProviders
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -32,6 +33,7 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
     var hour: Int = 0
     var minute: Int = 0
 
+    private var playerCounter = 1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -44,15 +46,38 @@ class UpdateEventFragment : Fragment(),  DatePickerDialog.OnDateSetListener, Tim
 
         view.findViewById<TextView>(R.id.edit_event_location).text = model.getEvent().value!!.location
 
-      //  view.findViewById<EditText>(R.id.update_event_players_number).text = ""// model.getEvent().value!!.maxPlayers.toString()
+        val dateFormat = SimpleDateFormat("hh:mm a yyyy-MM-dd")
 
-        view.findViewById<TextView>(R.id.edit_event_time).text = model.getEvent().value!!.date.toString()
+       // holder.view.findViewById<TextView>(R.id.date).text = dateFormat.format(events[position].date)
+
+        //view.findViewById<TextView>(R.id.edit_event_date).text = dateFormat.model.getEvent().value!!.date
+        view.findViewById<TextView>(R.id.edit_event_time).text = model.getEvent().value!!.date.time.toString()
 
         val spinner =  view.findViewById<Spinner>(R.id.edit_event_sport)
 
         spinner.setSelection(getIndex(spinner, model.getEvent().value!!.sport))
 
         playerCounterTxt = view.findViewById(R.id.update_event_players_number)
+
+        playerCounter = model.getEvent().value!!.maxPlayers.toInt()
+
+        playerCounterTxt!!.setText(model.getEvent().value!!.maxPlayers)
+       // playerCounterTxt.setText(model.getEvent().value!!.maxPlayers) //= model.getEvent().value!!.maxPlayers as EditText
+
+        view?.findViewById<Button>(R.id.updatePlusBtn)?.setOnClickListener {
+
+            playerCounter++
+            playerCounterTxt!!.setText((playerCounter.toString()))
+        }
+
+
+        view?.findViewById<Button>(R.id.updateMinusBtn)?.setOnClickListener {
+            if (playerCounter != 1) {
+                playerCounter--
+                playerCounterTxt!!.setText((playerCounter.toString()))
+            }
+        }
+
 
 
         return view
