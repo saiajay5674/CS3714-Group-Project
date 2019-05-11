@@ -13,6 +13,8 @@ class ViewModel: ViewModel() {
     private var event = MutableLiveData<Event>()
     private var event_id = MutableLiveData<String>()
     private var currentUser = MutableLiveData<User>()
+    private var sortByEnum = MutableLiveData<SORT>()
+    private var radiusFilter = MutableLiveData<Int>()
 
     fun setvalue(event_id: String, event: Event, distance: String){
 
@@ -22,9 +24,27 @@ class ViewModel: ViewModel() {
 
     }
 
-    fun setCurrentUser(user: User)
+    fun getSortBy(): MutableLiveData<SORT>
+    {
+        return sortByEnum
+    }
+
+    fun getRadiusFilter(): MutableLiveData<Int>
+    {
+        return radiusFilter
+    }
+
+    fun intitializeApp(user: User, sort: SORT, radius: Int)
     {
         this.currentUser.value = user
+        this.sortByEnum.value = sort
+        this.radiusFilter.value = radius
+    }
+
+    fun setFilter(sort: SORT, radius: Int)
+    {
+        this.sortByEnum.value = sort
+        this.radiusFilter.value = radius
     }
 
     fun getEvent(): MutableLiveData<Event>
