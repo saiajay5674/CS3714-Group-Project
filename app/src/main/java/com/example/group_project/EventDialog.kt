@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import android.widget.DatePicker
 import android.widget.TextView
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.google.firebase.database.*
@@ -66,6 +67,8 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             val view = inflater.inflate(R.layout.popup, null)
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
+
+
 
             addEventButton = view.findViewById(R.id.dialog_add_event)
             cancelButton = view.findViewById(R.id.dialog_cancel)
@@ -135,7 +138,7 @@ class EventDialog : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePi
             }
 
 
-            builder.setView(view).setCancelable(false).setMessage("Create a new Event")
+            builder.setView(view).setCancelable(false)
 
             val dialog = builder.create()
 

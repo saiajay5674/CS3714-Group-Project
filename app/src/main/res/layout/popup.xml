@@ -21,6 +21,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
             >
+                <TextView
+                        android:text="Create New Game"
+                        android:background="#1087f0"
+                        android:textColor="#fff"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
+                        android:layout_height="wrap_content" android:id="@+id/popup_title" android:textSize="24sp"/>
                 <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
@@ -53,6 +61,8 @@
                             android:id="@+id/add_event_location"
                             android:layout_width="match_parent"
                             android:hint="Event location"
+                            android:imeOptions="actionDone"
+                            android:singleLine="true"
                             android:layout_height="wrap_content"
                     />
                 </LinearLayout>
