@@ -50,11 +50,12 @@ class EventsListFragment : Fragment() {
     lateinit var usernameSwitch: SwitchCompat
     lateinit var distanceSwitch: SwitchCompat
     lateinit var timeSwitch: SwitchCompat
+    lateinit var playersSwitch: SwitchCompat
     lateinit var filterButton: Button
     lateinit var filterCancelButton: Button
     lateinit var radiusSeekBar: SeekBar
     var radiusFilter: Int = 25
-    var sortByEnum: SORT = SORT.TIME
+    lateinit var sortByEnum: SORT
     var events = ArrayList<Event>()
 
 
@@ -137,30 +138,12 @@ class EventsListFragment : Fragment() {
         distanceSwitch = v.findViewById(R.id.chipDistance)
         timeSwitch = v.findViewById(R.id.chipTime)
         usernameSwitch = v.findViewById(R.id.chipUserName)
+        playersSwitch = v.findViewById(R.id.chipGame)
 
-        when(model.getSortBy().value)
-        {
-            SORT.USERNAME -> {
+        sortByEnum = model.getSortBy().value!!
 
-                timeSwitch.isChecked = false
-                distanceSwitch.isChecked = false
-                usernameSwitch.isChecked = true
-            }
+        setUpSwitches(sortByEnum)
 
-            SORT.DISTANCE -> {
-
-                timeSwitch.isChecked = false
-                distanceSwitch.isChecked = true
-                usernameSwitch.isChecked = false
-            }
-
-            SORT.TIME -> {
-
-                timeSwitch.isChecked = true
-                distanceSwitch.isChecked = false
-                usernameSwitch.isChecked = false
-            }
-        }
 
         filterButton = v.findViewById(R.id.filter_button)
         filterCancelButton = v.findViewById(R.id.filter_cancel)
@@ -217,6 +200,7 @@ class EventsListFragment : Fragment() {
             {
                 timeSwitch.isChecked = false
                 usernameSwitch.isChecked = false
+                playersSwitch.isChecked = false
             }
         }
 
@@ -226,6 +210,7 @@ class EventsListFragment : Fragment() {
             {
                 distanceSwitch.isChecked = false
                 usernameSwitch.isChecked = false
+                playersSwitch.isChecked = false
             }
         }
         usernameSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
@@ -234,8 +219,22 @@ class EventsListFragment : Fragment() {
             {
                 timeSwitch.isChecked = false
                 distanceSwitch.isChecked = false
+                playersSwitch.isChecked = false
+
             }
         }
+        playersSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+
+            if(b)
+            {
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = false
+
+            }
+        }
+
+
         radiusSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
 
@@ -273,32 +272,10 @@ class EventsListFragment : Fragment() {
 
         })
 
+
         filterCancelButton.setOnClickListener {
 
-            when(sortByEnum)
-            {
-
-                SORT.USERNAME -> {
-
-                    timeSwitch.isChecked = false
-                    distanceSwitch.isChecked = false
-                    usernameSwitch.isChecked = true
-                }
-
-                SORT.DISTANCE -> {
-
-                    timeSwitch.isChecked = false
-                    distanceSwitch.isChecked = true
-                    usernameSwitch.isChecked = false
-                }
-
-                SORT.TIME -> {
-
-                    timeSwitch.isChecked = true
-                    distanceSwitch.isChecked = false
-                    usernameSwitch.isChecked = false
-                }
-            }
+            setUpSwitches(sortByEnum)
 
             radiusSeekBar.progress = radiusFilter
             window.dismiss()
@@ -318,6 +295,10 @@ class EventsListFragment : Fragment() {
             {
                 sortByEnum = SORT.USERNAME
             }
+            if(playersSwitch.isChecked)
+            {
+                sortByEnum = SORT.PLAYERS
+            }
 
             radiusFilter = radiusSeekBar.progress
             filterRadius(events, adapter)
@@ -334,6 +315,44 @@ class EventsListFragment : Fragment() {
         }
 
         return view
+    }
+
+    fun setUpSwitches(sortBy: SORT)
+    {
+        when(sortBy)
+        {
+            SORT.USERNAME -> {
+
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = true
+                playersSwitch.isChecked = false
+            }
+
+            SORT.DISTANCE -> {
+
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = true
+                usernameSwitch.isChecked = false
+                playersSwitch.isChecked = false
+            }
+
+            SORT.TIME -> {
+
+                timeSwitch.isChecked = true
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = false
+                playersSwitch.isChecked = false
+            }
+
+            SORT.PLAYERS -> {
+
+                timeSwitch.isChecked = false
+                distanceSwitch.isChecked = false
+                usernameSwitch.isChecked = false
+                playersSwitch.isChecked = true
+            }
+        }
     }
 
     fun filterRadius(list: ArrayList<Event>, adapter: EventListAdapter)
@@ -673,6 +692,9 @@ class EventsListFragment : Fragment() {
                 SORT.TIME -> {
 
                     events = events.sortedWith(compareBy { it.date })
+                }
+                SORT.PLAYERS -> {
+                    events = events.sortedWith(compareByDescending { it.players.size })
                 }
             }
             notifyDataSetChanged()
