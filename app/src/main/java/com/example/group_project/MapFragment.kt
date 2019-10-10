@@ -49,7 +49,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     lateinit var geocoder: Geocoder
 
     //Location
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
     lateinit var locationCallback: LocationCallback
 
@@ -91,6 +91,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_map, container, false)
+
+        if (marker != null) {
+            marker!!.remove()
+        }
+
 
 
         locationManager = mainActivity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -150,6 +155,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
 
         view.findViewById<FloatingActionButton>(R.id.locationBtn).setOnClickListener {
+
+            if (marker != null) {
+                marker!!.remove()
+            }
 
             latitude = currentLocation!!.latitude
             longitude = currentLocation!!.longitude
@@ -299,7 +308,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         {
             val address = list.get(0)
 
-            moveCamera(LatLng(address.latitude, address.longitude), 15f, address.getAddressLine(0))
+            moveCamera(LatLng(address.latitude, address.longitude), 16f, address.getAddressLine(0))
 
         }
 
