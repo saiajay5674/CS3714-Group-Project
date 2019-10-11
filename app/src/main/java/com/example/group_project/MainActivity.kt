@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity(){
     private val listener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
 
-        val fragment = supportFragmentManager.findFragmentById(R.id.container)
 
+        val fragment = supportFragmentManager.findFragmentById(R.id.container)
         when(item.itemId) {
 
             R.id.menu_new_event -> {
